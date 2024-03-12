@@ -18,3 +18,4 @@ typedef struct Rules{
 Facts* initFacts();
 Rules* initRules() ;
 char * readRulesFile(char *);
+void saveRulesFile(char * name, char * data);

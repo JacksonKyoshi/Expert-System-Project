@@ -11,5 +11,6 @@ int main(int argc, char ** argv) {
 
     char * test = readRulesFile("rules.kbs");
     printf("%s",test);
+    saveRulesFile("test.kbs",test);
     return 0;
 }   

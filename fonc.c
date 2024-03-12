@@ -22,17 +22,36 @@ Rules* initRules() {
 }
 
 char * readRulesFile(char * name){
-    FILE * file = fopen(name, "r");
+    FILE * file = fopen(name,"r");
     char * result = malloc(sizeof(char)*100);
     char character;
-
-    while(character != EOF){
+    while(character != -1){
         character = fgetc(file);
         if(strcmp(&character,"\n")!=32){
-            strncat(result,&character,1);
+            //strncat(result,&character,1);
+            sprintf(result + strlen(result), "%c", character);
         }
+        printf("%d\n",character);
     }
     fclose(file);
     return result;
 }
 
+void saveRulesFile(char * name, char * data){
+    FILE * file = fopen(name, "w");
+    int cpt = 0;
+    char character;
+    char pointVirgule = ';';
+    while(character!=EOF){
+        character = data[cpt];
+        if(character == pointVirgule){
+            fputc(character,file);
+            fputs("\n",file);
+            cpt +=1;
+        }
+        else{
+            fputc(character,file);
+            cpt +=1;
+        }
+    }
+}
