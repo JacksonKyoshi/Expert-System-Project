@@ -5,11 +5,11 @@
 
 typedef struct Facts{
     char * name;
-    Facts * next;
+    struct Facts * next;
 }Facts;
 
 typedef struct Rules{
     char * name;
-    Rules * next;
+    struct Rules * next;
     struct Facts * factList;
 }Rules;
