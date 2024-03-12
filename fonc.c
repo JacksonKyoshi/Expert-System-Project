@@ -20,3 +20,19 @@ Rules* initRules() {
     lst -> next=NULL;
     return lst; 
 }
+
+char * readRulesFile(char * name){
+    FILE * file = fopen(name, "r");
+    char * result = malloc(sizeof(char)*100);
+    char character;
+
+    while(character != EOF){
+        //printf("%s => %d \n",&character,strcmp(&character,"\n"));
+        character = fgetc(file);
+        if(strcmp(&character,"\n")!=32){
+            strncat(result,&character,1);
+        }
+    }
+    printf("le retour : %s",result);
+    return result;
+}

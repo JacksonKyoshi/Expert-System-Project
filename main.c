@@ -9,6 +9,6 @@ int main(int argc, char ** argv) {
     Rules* lstR = initRules();
     
 
-
+    char * test = readRulesFile("rules.kbs");
     return 0;
 }   

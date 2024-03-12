@@ -17,3 +17,4 @@ typedef struct Rules{
 
 Facts* initFacts();
 Rules* initRules() ;
+char * readRulesFile(char *);
