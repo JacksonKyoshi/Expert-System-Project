@@ -27,12 +27,10 @@ char * readRulesFile(char * name){
     char character;
 
     while(character != EOF){
-        //printf("%s => %d \n",&character,strcmp(&character,"\n"));
         character = fgetc(file);
         if(strcmp(&character,"\n")!=32){
             strncat(result,&character,1);
         }
     }
-    printf("le retour : %s",result);
     return result;
 }
