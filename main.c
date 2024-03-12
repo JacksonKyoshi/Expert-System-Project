@@ -10,5 +10,6 @@ int main(int argc, char ** argv) {
     
 
     char * test = readRulesFile("rules.kbs");
+    printf("%s",test);
     return 0;
 }   

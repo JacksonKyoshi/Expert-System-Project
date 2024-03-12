@@ -32,5 +32,7 @@ char * readRulesFile(char * name){
             strncat(result,&character,1);
         }
     }
+    fclose(file);
     return result;
 }
+
