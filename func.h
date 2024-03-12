@@ -17,3 +17,7 @@ typedef struct Rules{
 
 Facts* initFacts();
 Rules* initRules() ;
+Rules * readInv(char * content);
+Rules * addRules(Rules* lst,Rules* elm);
+Facts * addFact(Facts* lst,Facts* elm);
+void showRules(Rules* lst);
