@@ -13,3 +13,7 @@ typedef struct Rules{
     struct Rules * next;
     struct Facts * factList;
 }Rules;
+
+
+Facts* initFacts();
+Rules* initRules() ;
