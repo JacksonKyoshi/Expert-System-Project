@@ -62,3 +62,24 @@ void showRules(Rules* lst) {
     }
     return lst;
 }
+
+Facts* createFact(char * name) {
+    Facts* fact=initFacts();
+    strcpy(fact->name,name);
+    return fact;
+}
+
+Rules* createRule(Facts* facts,char* name) {
+    Rules* rule=initRules();
+    rule->factList=facts;
+    strcpy(rule->name,name);
+    return rule;
+}
+
+
+/*
+Rules* writeRules(char* str) {
+    
+
+    return lst;
+}*/

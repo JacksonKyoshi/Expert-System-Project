@@ -5,34 +5,27 @@
 #include "func.h"
 
 int main(int argc, char ** argv) {
-    Facts* lstF = malloc(sizeof(Facts*));
-    lstF->name=malloc(20*sizeof(char));
-    strcpy(lstF->name,"miam");
-    lstF->next=NULL;
 
-    Facts* lstF2 = malloc(sizeof(Facts*));
-    lstF2->name=malloc(20*sizeof(char));
-    strcpy(lstF2->name,"leramadan");
-    lstF2->next=NULL;
-
-    Rules* lstR = initRules();
-    Rules* elm=malloc(sizeof(Rules));
-    elm->name=malloc(20*sizeof(char));
-    elm->factList=malloc(sizeof(Facts*));
-  elm->factList=lstF;
-    strcpy(elm->name,"bite");
+Facts* lstF=createFact("miam");
+Facts* lstF2=createFact("leramadan");
+lstF=addFact(lstF,lstF2);
+Rules* lstR=createRule(lstF,"bite");
 
 
+Facts* lstFV2=createFact("Cricri");
+Facts* lstF2V2=createFact("lepaul");
+lstFV2=addFact(lstFV2,lstF2V2);
+Rules* lstRV2=createRule(lstFV2,"djafar");
+
+Rules* lstRV3=createRule(NULL,"bazooka");
 
    char * testLecture= malloc(400*sizeof(char));
     strcpy(testLecture,"a b -> c;b c -> d;a d -> n;n e g ->a; c -> n;");
    /* printf("%s",testLecture);
     printf("\n");
     readInv(testLecture);*/
-    elm->factList= addFact(elm->factList,lstF);
-    elm->factList= addFact(elm->factList,lstF2);
-    lstR= addRules(lstR,elm);
+    lstR=addRules(lstR,lstRV2);
+    lstR=addRules(lstR,lstRV3);
     showRules(lstR);
-
     return 0;
 }   

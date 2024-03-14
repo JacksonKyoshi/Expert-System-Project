@@ -21,3 +21,5 @@ Rules * readInv(char * content);
 Rules * addRules(Rules* lst,Rules* elm);
 Facts * addFact(Facts* lst,Facts* elm);
 void showRules(Rules* lst);
+Rules* createRule(Facts* facts,char* name);
+Facts* createFact(char * name);
