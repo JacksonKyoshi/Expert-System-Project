@@ -24,3 +24,6 @@ void showRules(Rules* lst);
 Rules* createRule(Facts* facts,char* name);
 Facts* createFact(char * name);
 Facts* deleteFacts(Facts* lst);
+Facts* writeFacts(char* str);
+void showFacts(Facts* factlist);
+Rules* writeRules(char* content);
