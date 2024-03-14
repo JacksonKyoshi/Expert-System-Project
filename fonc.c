@@ -25,13 +25,21 @@ char * readRulesFile(char * name){
     FILE * file = fopen(name,"r");
     char * result = malloc(sizeof(char)*1000);
     char character;
-    while(character != -1){
-        character = fgetc(file);
-        if(strcmp(&character,"\n")!=32){
-            //strncat(result,&character,1);
+
+    if (file == NULL) {
+        perror("Error opening file");
+        exit(EXIT_FAILURE);
+    }
+
+    do{
+         if(character != '\n'){
+            //strncat(result ,&character,1);
             sprintf(result + strlen(result), "%c", character);
         }
-    }
+        character = fgetc(file);
+    }while(character != EOF);
+
+    printf("%s\n",result);
     fclose(file);
     return result;
 }
@@ -41,8 +49,8 @@ void saveRulesFile(char * name, char * data){
     int cpt = 0;
     char character;
     char pointVirgule = ';';
-    while(character!=EOF){
-        character = data[cpt];
+    character = data[cpt];
+    do{
         if(character == pointVirgule){
             fputc(character,file);
             fputs("\n",file);
@@ -52,7 +60,13 @@ void saveRulesFile(char * name, char * data){
             fputc(character,file);
             cpt +=1;
         }
-    }
+        if(data[cpt]){
+            character = data[cpt];
+        }
+        else{
+            character = '?';
+        }
+    }while(character != '?');
 }
 
 // Fonction pour chaîner en arrière
