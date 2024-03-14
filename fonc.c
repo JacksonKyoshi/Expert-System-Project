@@ -136,38 +136,45 @@ Rules* forwardChain(Facts* factBase, Rules* ruleBase) {
         }
         tmpApplicableRule->next = newRule;
       }
+    }
+
+    // Avancer dans la liste des règles même si la règle n'est pas applicable
+    Rules* prevRule = NULL;
+    Rules* tmpDeleteRule = ruleBase;
+
+    while (tmpDeleteRule != tmpRule) {
+      prevRule = tmpDeleteRule;
+      tmpDeleteRule = tmpDeleteRule->next;
+    }
+
+    if (isApplicable) {
+      tmpRule = tmpRule->next;
     } else {
-      // **Suppression de la règle non applicable**
-      Rules* prevRule = NULL;
-      Rules* tmpDeleteRule = ruleBase;
-
-      while (tmpDeleteRule != tmpRule) {
-        prevRule = tmpDeleteRule;
-        tmpDeleteRule = tmpDeleteRule->next;
-      }
-
       if (prevRule == NULL) {
         ruleBase = ruleBase->next;  // rule is the head
       } else {
         prevRule->next = tmpRule->next;  // Remove the rule from the linked list
       }
       free(tmpRule);  // Free the memory allocated for the rule
+      tmpRule = ruleBase; // Move to the next rule after deletion
     }
-
-    tmpRule = tmpRule->next;
   }
 
   return applicableRules;
 }
 
 bool isInFactBase(Facts* factBase, Facts* fact) {
-  while (factBase != NULL) {
-    if (factBase == fact) {
-      return true;
+    if (factBase == NULL || fact == NULL) {
+        return false;
     }
-    factBase = factBase->next;
-  }
-  return false;
+
+    while (factBase != NULL) {
+        if (strcmp(factBase->name, fact->name) == 0) {
+            return true;
+        }
+        factBase = factBase->next;
+    }
+    return false;
 }
 
 Facts *findFact(Facts *base, char *name) {
