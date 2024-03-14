@@ -40,8 +40,6 @@ char * readRulesFile(char * name){
         }
         character = fgetc(file);
     }while(character != EOF);
-
-    printf("%s\n",result);
     fclose(file);
     return result;
 }
@@ -309,3 +307,21 @@ Rules* writeRules(char* content) {
     }
     return NULL;
     }
+
+
+
+Rules * charToRules(char * data){
+    char character;
+    char * rule = malloc(sizeof(char)*200);
+    Rules * list = initRules();
+    for(int i = 0;i<strlen(data);i++){
+        character = data[i];
+        if(character == ';'){
+            addRules(list,writeRules(rule));
+        }
+        else{
+            strncat(rule,&character,1);
+        }
+    }
+    return list;
+}

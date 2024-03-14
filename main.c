@@ -14,6 +14,12 @@ int main(int argc, char ** argv) {
     char * test = readRulesFile("rules.kbs");
     saveRulesFile("test.kbs",test);
     */
+
+   char * test = readRulesFile("rules.kbs");
+   Rules * list = charToRules(test);
+   
+   showRules(list);
+
     return 0;
 
 }   
