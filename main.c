@@ -8,9 +8,10 @@ int main(int argc, char ** argv) {
     Facts* lstF = initFacts();
     Rules* lstR = initRules();
     
-
+    /*test max
+    
     char * test = readRulesFile("rules.kbs");
-    printf("%s",test);
     saveRulesFile("test.kbs",test);
+    */
     return 0;
 }   

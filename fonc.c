@@ -23,7 +23,7 @@ Rules* initRules() {
 
 char * readRulesFile(char * name){
     FILE * file = fopen(name,"r");
-    char * result = malloc(sizeof(char)*100);
+    char * result = malloc(sizeof(char)*1000);
     char character;
     while(character != -1){
         character = fgetc(file);
@@ -31,7 +31,6 @@ char * readRulesFile(char * name){
             //strncat(result,&character,1);
             sprintf(result + strlen(result), "%c", character);
         }
-        printf("%d\n",character);
     }
     fclose(file);
     return result;
