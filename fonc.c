@@ -306,3 +306,4 @@ Rules* writeRules(char* content) {
             rule=createRule(fact,token);
            return rule;
         }
+    }}
