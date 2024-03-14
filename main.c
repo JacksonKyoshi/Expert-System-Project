@@ -5,6 +5,7 @@
 #include "func.h"
 
 int main(int argc, char ** argv) {
+
     Facts* lstF = initFacts();
     Rules* lstR = initRules();
     
@@ -14,4 +15,5 @@ int main(int argc, char ** argv) {
     saveRulesFile("test.kbs",test);
     */
     return 0;
+
 }   
