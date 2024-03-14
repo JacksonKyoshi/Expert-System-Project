@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <stdbool.h>
 
 typedef struct Facts{
     char * name;
@@ -17,6 +18,14 @@ typedef struct Rules{
 
 Facts* initFacts();
 Rules* initRules() ;
+
+char * readRulesFile(char *);
+void saveRulesFile(char * name, char * data);
+int backwardChain(char *but, Rules *baseRules, Facts *baseFacts);
+Rules* forwardChain(Facts* factBase, Rules* ruleBase);
+bool isInFactBase(Facts* factBase, Facts* fact);
+Facts *findFact(Facts *base, char *name);
+
 Rules * readInv(char * content);
 Rules * addRules(Rules* lst,Rules* elm);
 Facts * addFact(Facts* lst,Facts* elm);

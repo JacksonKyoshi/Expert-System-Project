@@ -5,8 +5,15 @@
 #include "func.h"
 
 int main(int argc, char ** argv) {
-        char content[]= "a b c -> cul";
-        Rules* rule  = writeRules(content);
-        showRules(rule);
-        return 0;
+
+    Facts* lstF = initFacts();
+    Rules* lstR = initRules();
+    
+    /*test max
+    
+    char * test = readRulesFile("rules.kbs");
+    saveRulesFile("test.kbs",test);
+    */
+    return 0;
+
 }   
