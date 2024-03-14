@@ -288,11 +288,11 @@ Facts* writeFacts(char* str) {
             }        
         }
     }
+    return NULL;
 }
 
 Rules* writeRules(char* content) {
     char* token=malloc(100*sizeof(char));
-    char* factlist=malloc(100*sizeof(char));
     token = strtok(content, "->");
     if(token != NULL){
         //ici on va gérer les facts
@@ -306,4 +306,6 @@ Rules* writeRules(char* content) {
             rule=createRule(fact,token);
            return rule;
         }
-    }}
+    }
+    return NULL;
+    }
