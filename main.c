@@ -27,5 +27,9 @@ Rules* lstRV3=createRule(NULL,"bazooka");
     lstR=addRules(lstR,lstRV2);
     lstR=addRules(lstR,lstRV3);
     showRules(lstR);
+    lstR->factList=deleteFacts(lstR->factList);
+     showRules(lstR);
+    
+    //writeRules(testLecture);
     return 0;
 }   

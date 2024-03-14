@@ -23,3 +23,4 @@ Facts * addFact(Facts* lst,Facts* elm);
 void showRules(Rules* lst);
 Rules* createRule(Facts* facts,char* name);
 Facts* createFact(char * name);
+Facts* deleteFacts(Facts* lst);
