@@ -6,7 +6,6 @@
 
 //first commit
 
-
 Facts* initFacts() {
     Facts* lst = malloc(sizeof(Facts));
     lst->name =malloc(20*sizeof(char));
@@ -17,11 +16,11 @@ Facts* initFacts() {
 Rules* initRules() {
     Rules* lst=malloc(sizeof(Rules));
     lst->name=malloc(20*sizeof(char));
+    strcpy(lst->name,"temp");
     lst -> next=NULL;
     lst->factList = initFacts();
     return lst; 
 }
-
 
 char * readRulesFile(char * name){
     FILE * file = fopen(name,"r");
@@ -35,7 +34,6 @@ char * readRulesFile(char * name){
 
     do{
          if(character != '\n'){
-            //strncat(result ,&character,1);
             sprintf(result + strlen(result), "%c", character);
         }
         character = fgetc(file);
@@ -72,36 +70,30 @@ void saveRulesFile(char * name, char * data){
 // Fonction pour chaîner en arrière
 int backwardChain(char *but, Rules *baseRules, Facts *baseFacts) {
     int result = 0;
-
     // Si le but n'est pas dans la base de faits
     if (!findFact(baseFacts, but)) {
         Rules *rule = baseRules;
-
         // Tant qu'il y a des règles et que le résultat n'est pas trouvé
         while (rule != NULL && !result) {
             // Si la conclusion de la règle est le but
             if (strcmp(rule->name, but) == 0) {
                 Facts *hypothesis = rule->factList;
                 int continueFlag = 1;
-
                 // Tant qu'il y a des hypothèses et que la boucle continue
                 while (hypothesis != NULL && continueFlag) {
                     // On vérifie chaque hypothèse par chaînage arrière
                     continueFlag = backwardChain(hypothesis->name, baseRules, baseFacts);
                     hypothesis = hypothesis->next;
                 }
-
                 // Si toutes les hypothèses sont vraies, la conclusion est vraie
                 result = continueFlag;
             }
-
             rule = rule->next;
         }
     } else {
         // Le but est dans la base de faits, donc la conclusion est vraie
         result = 1;
     }
-
     return result;
 }
 
@@ -167,7 +159,6 @@ bool isInFactBase(Facts* factBase, Facts* fact) {
     if (factBase == NULL || fact == NULL) {
         return false;
     }
-
     while (factBase != NULL) {
         if (strcmp(factBase->name, fact->name) == 0) {
             return true;
@@ -187,38 +178,36 @@ Facts *findFact(Facts *base, char *name) {
     return NULL;
 }
 
-
 Facts * addFact(Facts* lst,Facts* elm) {
     Facts * copy = lst ;
-    while(lst->next != NULL){
-        lst=lst->next;
+    while(copy->next != NULL){
+        copy=copy->next;
     }
-    lst->next = elm;
-    lst->next->next=NULL;
-    return copy;
+    copy->next = elm;
+    elm->next=NULL;
+    return lst;
 }
 
 Rules * addRules(Rules* lst,Rules* elm) {
     Rules * copy = lst ;
-    while(lst->next != NULL){
-        lst=lst->next;
-    }
-    lst->next = elm;
-    lst->next->next=NULL;
-    return copy;
+     while(copy->next != NULL){
+         copy=copy->next;
+     }
+     copy->next = elm;
+     elm->next=NULL;
+     return lst;
 }
 
 void showRules(Rules* lst) {
-    while(lst != NULL) {
-        printf("| %s | -->", lst->name);
-        
-        Facts* factPtr = lst->factList;
+    Rules * copy = lst;
+    while(copy != NULL) {
+        printf("| %s | -->", copy->name);
+        Facts* factPtr = copy->factList;
         while(factPtr != NULL) {
             printf("[%s]", factPtr->name);
             factPtr = factPtr->next;
         }
-        
-        lst = lst->next;
+        copy = copy->next;
         printf("\n");
     }
 }
@@ -236,7 +225,6 @@ Rules* createRule(Facts* facts,char* name) {
     return rule;
 }
 
-
 Facts* deleteFacts(Facts* lst) {
     Facts* copy = lst;
     while(copy != NULL) {
@@ -247,7 +235,6 @@ Facts* deleteFacts(Facts* lst) {
     return NULL; 
 }
 
-
 void showFacts(Facts* factlist){
     while(factlist!=NULL){
         printf("| %s |",factlist->name);
@@ -255,14 +242,11 @@ void showFacts(Facts* factlist){
     }
 }
 
-
 //str sera une seule ligne donc de la première lettre à un point virgule.
 Facts* writeFacts(char* str) {
-
     char* name=malloc(20*sizeof(char));
     strcpy(name, "\0");
     Facts* factlist=initFacts();
-    
     for(int i=0;i<strlen(str);i++){
         if(str[i]==59) {
             //showFacts(factlist);
@@ -277,8 +261,6 @@ Facts* writeFacts(char* str) {
                     strcpy(factlist->name,name);
                 }
                 else{
-
-
                    Facts* newFact= createFact(name);
                    factlist= addFact(factlist,newFact);
                 }
@@ -291,10 +273,11 @@ Facts* writeFacts(char* str) {
 
 Rules* writeRules(char* data) {
     char* token=malloc(100*sizeof(char));
-    char content[100];
+    char* content = malloc(100*sizeof(char));
     strcpy(content,data);
     token = strtok(content, "->");
     if(token != NULL){
+        //printf("token : %s\n",token);
         //ici on va gérer les facts
         char* lst= malloc(sizeof(token)+2);
         strcpy(lst,token);
@@ -308,16 +291,18 @@ Rules* writeRules(char* data) {
         }
     }
     return NULL;
-    }
-
-
+}
 
 Rules * charToRules(char * data){
     Rules* lst=initRules();
     char* name=malloc(20*sizeof(char));
     strcpy(name, "\0");
-    for(int i=0;i<strlen(data);i++){
-        if(data[i]==59){
+    for(int i=0;i<=strlen(data);i++){
+        if(strcmp(lst->name,"temp")==0 && data[i]==59){
+            lst = writeRules(name);
+            strcpy(name,"\0");  
+        }
+        else if(data[i]==59){
            lst=addRules(lst,writeRules(name));
            strcpy(name,"\0");  
         }
@@ -326,5 +311,4 @@ Rules * charToRules(char * data){
         }
     }
     return lst;
-    }
-   
+}
