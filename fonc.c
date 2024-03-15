@@ -328,18 +328,3 @@ Rules * charToRules(char * data){
     return lst;
     }
    
-   
-   
-    /*char * rule = malloc(sizeof(char)*200);
-    memset(rule,0x00,200);
-    Rules * list = initRules();
-    for(int i = 0;i<strlen(data);i++){
-        if(data[i] == ';'){
-           addRules(list,writeRules(rule));
-           strcpy(rule,"\0");
-        }
-        else{
-            strncat(rule,&data[i],1);
-        }
-    }
-    return NULL;*/
