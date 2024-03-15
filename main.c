@@ -13,7 +13,7 @@ int main(int argc, char ** argv) {
    Rules * list = charToRules(test);
 
  //  Rules* list=writeRules("a b c ->d");
-  // showRules(list);
+   showRules(list);
     return 0;
 
 }   

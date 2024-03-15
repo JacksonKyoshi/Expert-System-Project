@@ -313,17 +313,19 @@ Rules* writeRules(char* data) {
 
 
 Rules * charToRules(char * data){
+    Rules* lst=initRules();
     char* name=malloc(20*sizeof(char));
     strcpy(name, "\0");
     for(int i=0;i<strlen(data);i++){
         if(data[i]==59){
-           showRules(writeRules(name));
+           lst=addRules(lst,writeRules(name));
            strcpy(name,"\0");  
         }
         else{
             strncat(name,&data[i],1);
         }
     }
+    return lst;
     }
    
    
