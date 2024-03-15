@@ -289,8 +289,10 @@ Facts* writeFacts(char* str) {
     return NULL;
 }
 
-Rules* writeRules(char* content) {
+Rules* writeRules(char* data) {
     char* token=malloc(100*sizeof(char));
+    char content[100];
+    strcpy(content,data);
     token = strtok(content, "->");
     if(token != NULL){
         //ici on va gérer les facts
@@ -311,17 +313,31 @@ Rules* writeRules(char* content) {
 
 
 Rules * charToRules(char * data){
-    char character;
-    char * rule = malloc(sizeof(char)*200);
-    Rules * list = initRules();
-    for(int i = 0;i<strlen(data);i++){
-        character = data[i];
-        if(character == ';'){
-            addRules(list,writeRules(rule));
+    char* name=malloc(20*sizeof(char));
+    strcpy(name, "\0");
+    for(int i=0;i<strlen(data);i++){
+        if(data[i]==59){
+           showRules(writeRules(name));
+           strcpy(name,"\0");  
         }
         else{
-            strncat(rule,&character,1);
+            strncat(name,&data[i],1);
         }
     }
-    return list;
-}
+    }
+   
+   
+   
+    /*char * rule = malloc(sizeof(char)*200);
+    memset(rule,0x00,200);
+    Rules * list = initRules();
+    for(int i = 0;i<strlen(data);i++){
+        if(data[i] == ';'){
+           addRules(list,writeRules(rule));
+           strcpy(rule,"\0");
+        }
+        else{
+            strncat(rule,&data[i],1);
+        }
+    }
+    return NULL;*/

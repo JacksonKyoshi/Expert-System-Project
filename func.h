@@ -35,5 +35,6 @@ Facts* createFact(char * name);
 Facts* deleteFacts(Facts* lst);
 Facts* writeFacts(char* str);
 void showFacts(Facts* factlist);
-Rules* writeRules(char* content);
+Rules* writeRules(char* data);
+
 Rules * charToRules(char * data);
