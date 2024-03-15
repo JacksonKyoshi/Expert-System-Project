@@ -8,12 +8,12 @@ int main(int argc, char ** argv) {
 
     Facts* lstF = initFacts();
     Rules* lstR = initRules();
-    
-    /*test max
-    
-    char * test = readRulesFile("rules.kbs");
-    saveRulesFile("test.kbs",test);
-    */
+
+   char * test = readRulesFile("rules.kbs");
+   Rules * list = charToRules(test);
+
+ //  Rules* list=writeRules("a b c ->d");
+   showRules(list);
     return 0;
 
 }   
