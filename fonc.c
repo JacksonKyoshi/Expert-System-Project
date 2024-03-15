@@ -97,6 +97,7 @@ int backwardChain(char *but, Rules *baseRules, Facts *baseFacts) {
     return result;
 }
 
+/*
 Rules* forwardChain(Facts* factBase, Rules* ruleBase) {
   Rules* applicableRules = NULL;
   Rules* tmpRule = ruleBase;
@@ -154,6 +155,7 @@ Rules* forwardChain(Facts* factBase, Rules* ruleBase) {
 
   return applicableRules;
 }
+*/
 
 bool isInFactBase(Facts* factBase, Facts* fact) {
     if (factBase == NULL || fact == NULL) {
@@ -312,3 +314,61 @@ Rules * charToRules(char * data){
     }
     return lst;
 }
+
+/*
+Rules * forwardChain(Rules* ruleBase, Facts* factBase){
+	Rules* tmp = malloc(sizeof(Rules*)) ;
+	Rules* trueList = malloc(sizeof(Rules*)) ;
+	tmp = ruleBase ;
+	while(tmp != NULL)
+	{
+        if(verifRegles(tmp->factList, factBase) == 1){
+                ajouteRegle(trueList, tmp); //on ajoute la règle a la liste de règles qui sont vraies
+            }
+        else{
+                tmp->next;
+            }
+    }
+	return trueList;
+}
+
+int verifFait(Facts* factBase, Facts* fact){
+    fact tmp = malloc(sizeof(fact)) ;
+    tmp = factList ;
+    int answer = 0 ;
+    while(tmp != NULL){
+	    if(strcmp(tmp->name,fact->name) == 0){
+            result == 1
+            tmp = tmp->next ;
+        }
+	    else{
+            tmp= tmp->next ;
+	    }
+	}
+return answer;
+}
+
+
+int verifRegles(Facts* factList, Rules* regle){
+    int resultat;
+    regle *tmp = regle ;
+    fact *tmp2 = regle->factList
+    while(tmp != NULL){
+        while(tmp2 != NULL)
+	    {
+		if(verifFait(factList, tmp2) == 0)
+		{
+			resultat = 0 ;
+			Return resultat ;
+		}
+		else{
+			tmp2 = tmp2->next ;
+		}
+    }
+    resultat = 1 ;
+    tmp = tmp->next ;
+}
+return resultat;
+}
+
+*/
