@@ -383,6 +383,21 @@ void tests(){
 
 }
 
+Facts* createFactlist() {
+    bool quitter=false;
+    Facts* factlist=initFacts();
+    char* name=malloc(20*sizeof(char));
+    do{
+        printf("\nentrez le nom du fait (q pour quitter) :");
+        scanf("%s",name);
+        if(strcmp(name,"q")==0){
+            quitter=true;
+        }
+        factlist=addFact(factlist,createFact(name));
+        //printf("\nentrez q pour quitter");
+    }while(!quitter);
+    return factlist;
+}
 
 void menu() {
     int choix;
@@ -390,7 +405,6 @@ void menu() {
     char* Fact= malloc(20*sizeof(char));
     char * test = readRulesFile("rules.kbs");
     Rules * list = charToRules(test);
-
     do {
         printf("\n------ Menu ------\n");
         printf("1. Tests\n");
@@ -409,7 +423,7 @@ void menu() {
             Rules * list = charToRules(test);
             showRules(list);
                 break;
-            case 3:
+            case 3 :
                 printf("\nForward Chain \n");
                 break;
             case 4 :
