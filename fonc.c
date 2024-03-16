@@ -336,10 +336,6 @@ void tests(){
     Facts* fact4 = createFact("Fact4");
     // Ajout des faits à la base de faits
     base_de_faits = addFact(base_de_faits, fact1);
-    base_de_faits = addFact(base_de_faits, fact2);
-    base_de_faits = addFact(base_de_faits, fact3);
-    base_de_faits = addFact(base_de_faits, fact4);
-
     Rules* base_de_regles = NULL;
     Facts* rule1_facts = initFacts();
     Facts* rule2_facts = initFacts();
@@ -361,8 +357,16 @@ void tests(){
     base_de_regles = addRules(base_de_regles, rule2);
     printf("Forward chaining result:\n");
     Rules* trueList = forwardChain(base_de_regles, base_de_faits);
-    
     showRules(trueList);
+
+
+     base_de_faits = addFact(base_de_faits, fact2);
+     trueList = forwardChain(base_de_regles, base_de_faits);
+     showRules(trueList);
+
+      base_de_faits = addFact(base_de_faits, fact3);
+      trueList = forwardChain(base_de_regles, base_de_faits);
+      showRules(trueList);
 
     printf("Test forwardChain: Passed\n");
 
