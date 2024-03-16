@@ -14,9 +14,7 @@ int main(int argc, char ** argv) {
    showRules(list);
    Facts* fact=createFact("b");
    forwardChain(list,fact);*/
-  // menu();
-
-  createFactlist();
+   menu();
     return 0;
 
 

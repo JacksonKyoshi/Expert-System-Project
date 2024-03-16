@@ -399,6 +399,8 @@ Facts* createFactlist() {
     return factlist;
 }
 
+
+
 void menu() {
     int choix;
     bool quitter = false;
@@ -419,11 +421,11 @@ void menu() {
                 tests();
                 break;
             case 2:
-            char * test = readRulesFile("rules.kbs");
-            Rules * list = charToRules(test);
             showRules(list);
                 break;
             case 3 :
+                Facts * factlist  = createFactlist();
+                forwardChain(list,factlist);
                 printf("\nForward Chain \n");
                 break;
             case 4 :
