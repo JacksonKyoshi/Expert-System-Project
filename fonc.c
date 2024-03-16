@@ -97,65 +97,67 @@ int backwardChain(char *but, Rules *baseRules, Facts *baseFacts) {
     return result;
 }
 
-/*
-Rules* forwardChain(Facts* factBase, Rules* ruleBase) {
-  Rules* applicableRules = NULL;
-  Rules* tmpRule = ruleBase;
+Rules* forwardChain(Rules* base_de_regles, Facts* base_de_faits) {
+  Rules* tmp = base_de_regles;
+  Rules* trueList = initRules();
 
-  while (tmpRule != NULL) {
-    bool isApplicable = true;
-    Facts* tmpFact = tmpRule->factList;
+  while (tmp != NULL) {
+    if (verifRegles(base_de_faits, tmp) == 1) {
+      // On appelle la fonction `ajouteRegle` pour ajouter la règle à la liste `trueList`
+      //ajouteRegle(trueList, tmp);
+      Rules* copy = initRules();
+      strcpy(copy->name,tmp->name);
+      copy->factList=tmp->factList;
+      copy->next=NULL;
+      trueList=addRules(trueList,copy);
+      }
 
-    while (tmpFact != NULL) {
-      if (!isInFactBase(factBase, tmpFact)) {
-        isApplicable = false;
+    tmp = tmp->next;
+  }
+  showRules(trueList);
+  return trueList;
+}
+
+
+
+int verifFait(Facts* factList, Facts* fait) {
+  Facts* tmp = factList;
+  int answer = 0;
+
+  while (tmp != NULL) {
+    if (strcmp(tmp->name, fait->name) == 0) {
+      answer = 1;
+      break;
+    }
+    tmp = tmp->next;
+  }
+  return answer;
+}
+	
+int verifRegles(Facts* factList, Rules* regle) {
+  int resultat = 1;
+  Rules* tmp = regle;
+  Facts* tmp2 = regle->factList;
+
+  while (tmp != NULL) {
+    while (tmp2 != NULL) {
+      if (verifFait(factList, tmp2) == 0) {
+        resultat = 0;
         break;
       }
-      tmpFact = tmpFact->next;
+      tmp2 = tmp2->next;
     }
 
-    if (isApplicable) {
-      // Ajout de la règle applicable à la liste
-      Rules* newRule = (Rules*)malloc(sizeof(Rules));
-      newRule->name = tmpRule->name;
-      newRule->next = NULL;
-
-      if (applicableRules == NULL) {
-        applicableRules = newRule;
-      } else {
-        Rules* tmpApplicableRule = applicableRules;
-        while (tmpApplicableRule->next != NULL) {
-          tmpApplicableRule = tmpApplicableRule->next;
-        }
-        tmpApplicableRule->next = newRule;
-      }
+    if (resultat == 0) {
+      break;
     }
 
-    // Avancer dans la liste des règles même si la règle n'est pas applicable
-    Rules* prevRule = NULL;
-    Rules* tmpDeleteRule = ruleBase;
-
-    while (tmpDeleteRule != tmpRule) {
-      prevRule = tmpDeleteRule;
-      tmpDeleteRule = tmpDeleteRule->next;
-    }
-
-    if (isApplicable) {
-      tmpRule = tmpRule->next;
-    } else {
-      if (prevRule == NULL) {
-        ruleBase = ruleBase->next;  // rule is the head
-      } else {
-        prevRule->next = tmpRule->next;  // Remove the rule from the linked list
-      }
-      free(tmpRule);  // Free the memory allocated for the rule
-      tmpRule = ruleBase; // Move to the next rule after deletion
-    }
+    tmp2 = regle->factList;
+    tmp = tmp->next;
   }
 
-  return applicableRules;
+  return resultat;
 }
-*/
 
 bool isInFactBase(Facts* factBase, Facts* fact) {
     if (factBase == NULL || fact == NULL) {
@@ -314,61 +316,3 @@ Rules * charToRules(char * data){
     }
     return lst;
 }
-
-/*
-Rules * forwardChain(Rules* ruleBase, Facts* factBase){
-	Rules* tmp = malloc(sizeof(Rules*)) ;
-	Rules* trueList = malloc(sizeof(Rules*)) ;
-	tmp = ruleBase ;
-	while(tmp != NULL)
-	{
-        if(verifRegles(tmp->factList, factBase) == 1){
-                ajouteRegle(trueList, tmp); //on ajoute la règle a la liste de règles qui sont vraies
-            }
-        else{
-                tmp->next;
-            }
-    }
-	return trueList;
-}
-
-int verifFait(Facts* factBase, Facts* fact){
-    fact tmp = malloc(sizeof(fact)) ;
-    tmp = factList ;
-    int answer = 0 ;
-    while(tmp != NULL){
-	    if(strcmp(tmp->name,fact->name) == 0){
-            result == 1
-            tmp = tmp->next ;
-        }
-	    else{
-            tmp= tmp->next ;
-	    }
-	}
-return answer;
-}
-
-
-int verifRegles(Facts* factList, Rules* regle){
-    int resultat;
-    regle *tmp = regle ;
-    fact *tmp2 = regle->factList
-    while(tmp != NULL){
-        while(tmp2 != NULL)
-	    {
-		if(verifFait(factList, tmp2) == 0)
-		{
-			resultat = 0 ;
-			Return resultat ;
-		}
-		else{
-			tmp2 = tmp2->next ;
-		}
-    }
-    resultat = 1 ;
-    tmp = tmp->next ;
-}
-return resultat;
-}
-
-*/

@@ -26,7 +26,6 @@ int backwardChain(char *but, Rules *baseRules, Facts *baseFacts);
 bool isInFactBase(Facts* factBase, Facts* fact);
 Facts *findFact(Facts *base, char *name);
 
-Rules * readInv(char * content);
 Rules * addRules(Rules* lst,Rules* elm);
 Facts * addFact(Facts* lst,Facts* elm);
 void showRules(Rules* lst);
@@ -40,4 +39,4 @@ Rules* writeRules(char* data);
 Rules * charToRules(char * data);
 int verifFait(Facts* factBase, Facts* fact);
 int verifRegles(Facts* factList, Rules* regle);
-Rules * forwardChain(Rules* ruleBase, Facts* factBase);
+Rules* forwardChain(Rules* base_de_regles,Facts * base_de_faits);    

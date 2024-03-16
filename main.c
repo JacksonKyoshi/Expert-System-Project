@@ -6,12 +6,14 @@
 
 int main(int argc, char ** argv) {
 
-   char * test = readRulesFile("test.kbs");
+   char * test = readRulesFile("rules.kbs");
    //printf("test : %s\n","disparition");
    Rules * list = charToRules(test);
 
  //  Rules* list=writeRules("a b c ->d");
    showRules(list);
+   Facts* fact=createFact("b");
+   forwardChain(list,fact);
     return 0;
 
 }
