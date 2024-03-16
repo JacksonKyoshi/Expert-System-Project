@@ -40,3 +40,5 @@ Rules * charToRules(char * data);
 int verifFait(Facts* factBase, Facts* fact);
 int verifRegles(Facts* factList, Rules* regle);
 Rules* forwardChain(Rules* base_de_regles,Facts * base_de_faits);    
+
+void tests();

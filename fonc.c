@@ -315,3 +315,55 @@ Rules * charToRules(char * data){
     }
     return lst;
 }
+
+void tests(){
+    //Test1
+    char* data = readRulesFile("rules.kbs");
+    if (data != NULL) {
+        printf("Test readRulesFile: Passed\n");
+        printf("Data read from file: %s\n", data);
+    } else {
+        printf("Test readRulesFile: Failed\n");
+    }
+
+
+    //TestForward
+     // Création de quelques faits factices
+    Facts* base_de_faits = initFacts();
+    Facts* fact1 = createFact("Fact1");
+    Facts* fact2 = createFact("Fact2");
+    Facts* fact3 = createFact("Fact3");
+    Facts* fact4 = createFact("Fact4");
+    // Ajout des faits à la base de faits
+    base_de_faits = addFact(base_de_faits, fact1);
+    base_de_faits = addFact(base_de_faits, fact2);
+    base_de_faits = addFact(base_de_faits, fact3);
+    base_de_faits = addFact(base_de_faits, fact4);
+
+    Rules* base_de_regles = NULL;
+    Facts* rule1_facts = initFacts();
+    Facts* rule2_facts = initFacts();
+
+    Facts* rule1_fact1 = createFact("Fact1");
+    Facts* rule1_fact2 = createFact("Fact2");
+    Facts* rule2_fact3 = createFact("Fact3");
+    Facts* rule2_fact4 = createFact("Fact4");
+
+    rule1_facts = addFact(rule1_facts, rule1_fact1);
+    rule1_facts = addFact(rule1_facts, rule1_fact2);
+    rule2_facts = addFact(rule2_facts, rule2_fact3);
+    rule2_facts = addFact(rule2_facts, rule2_fact4);
+ 
+    Rules* rule1 = createRule(rule1_facts, "Rule1");
+    Rules* rule2 = createRule(rule2_facts, "Rule2");
+
+    base_de_regles = addRules(base_de_regles, rule1);
+    base_de_regles = addRules(base_de_regles, rule2);
+    printf("Forward chaining result:\n");
+    Rules* trueList = forwardChain(base_de_regles, base_de_faits);
+    
+    showRules(trueList);
+
+    printf("Test forwardChain: Passed\n");
+
+}
