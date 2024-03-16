@@ -106,6 +106,7 @@ void closeSDL(SDL_Window* window, SDL_Renderer* renderer) {
 }
 
 int main(int argc, char* args[]) {
+    int menu = 0;
     SDL_Window* window = NULL;
     SDL_Renderer* renderer = NULL;
 
@@ -121,23 +122,60 @@ int main(int argc, char* args[]) {
 
     // Set color for text
     SDL_Color textColor = {255, 255, 255, 255};
+    SDL_Color color = {0, 255, 0, 255};
 
     // Clear screen
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
-    // Draw text on a rectangle
-    drawTextOnRectangle(renderer, "Rectangle", 100, 100, font, textColor);
-    drawTextOnRectangle(renderer, "Salut", 100, 400, font, textColor);
+    // Event loop
+    SDL_Event event;
+    int quit = 0;
 
-    // Update screen
-    SDL_RenderPresent(renderer);
+    while (!quit) {
+        // Clear screen
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        SDL_RenderClear(renderer);
 
-    // Wait for user exit
-    SDL_Event e;
-    while (1) {
-        if (SDL_PollEvent(&e) && e.type == SDL_QUIT) {
-            break;
+        // Draw text on a rectangle
+        if (menu == 0) {
+            drawTextOnRectangle(renderer, "Rectangle", 100, 100, font, textColor);
+            drawTextOnRectangle(renderer, "Salut", 300, 100, font, textColor);
+        } else if (menu == 1) {
+            drawTextOnRectangle(renderer, "Bastient fils de", 200, 200, font, color);
+        }
+        else if (menu == 2) {
+            drawTextOnRectangle(renderer, "Tu preferes le chocolat ou", 200, 200, font, color);
+        }
+        
+
+        // Update screen
+        SDL_RenderPresent(renderer);
+
+        while (SDL_PollEvent(&event)) {
+            switch (event.type) {
+                case SDL_QUIT:
+                    quit = 1;
+                    break;
+                case SDL_MOUSEBUTTONDOWN:
+                    if (event.button.button == SDL_BUTTON_LEFT) {
+                        int mouseX = event.button.x;
+                        int mouseY = event.button.y;
+                        printf("Mouse clicked at (%d, %d)\n", mouseX, mouseY);
+                        if (menu == 0) {
+                            if (mouseX > 100 && mouseX < 240 && mouseY > 100 && mouseY < 150) {
+                                menu = 1;
+                            }
+                            if (mouseX > 300 && mouseX < 380 && mouseY > 100 && mouseY < 150) {
+                                
+                                menu = 2;
+                            }
+                        } else if (menu == 1 ||menu == 2) {
+                            menu = 0;
+                        }
+                    }
+                    break;
+            }
         }
     }
 
