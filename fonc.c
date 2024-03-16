@@ -407,6 +407,7 @@ void menu() {
     char* Fact= malloc(20*sizeof(char));
     char * test = readRulesFile("rules.kbs");
     Rules * list = charToRules(test);
+    char * backward=malloc(20*sizeof(char));
     do {
         printf("\n------ Menu ------\n");
         printf("1. Tests\n");
@@ -422,14 +423,24 @@ void menu() {
                 break;
             case 2:
             showRules(list);
-                break;
+            break;
             case 3 :
-                Facts * factlist  = createFactlist();
-                forwardChain(list,factlist);
                 printf("\nForward Chain \n");
+                Facts * factlistForward  = createFactlist();
+                forwardChain(list,factlistForward);
                 break;
             case 4 :
                 printf("\nBackward Chain \n");
+                Facts * factlistBack  = createFactlist();
+                printf("\nentrez le name : ");
+                scanf("%s",backward);
+                if(backwardChain(backward,list,factlistBack)==1 ){
+                    printf("\nBACKWARD : TRUE");
+                    break;
+                }
+                else{
+                    printf("\nnBACKWARD : FALSE");
+                }
                 break;
             case 5:
                 quitter = true;
