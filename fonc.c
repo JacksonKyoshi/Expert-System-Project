@@ -242,75 +242,82 @@ void showFacts(Facts* factlist){
     }
 }
 
-//str sera une seule ligne donc de la première lettre à un point virgule.
+
 Facts* writeFacts(char* str) {
-    char name[50];
-    //memset(name, 0, sizeof(name));
-    strcpy(name, "\0");
-    Facts* factlist=initFacts();
-    for(int i=0;i<strlen(str);i++){
-        if(str[i]==59) {
-            //showFacts(factlist);
-            return factlist;
-        }
-        else{
-            if(str[i] != 32) {
-                strcpy(name,strncat(name,&str[i],1));
+    char name[20]; 
+    Facts* factlist = initFacts();
+    int nameIndex = 0; 
+
+    for (int i = 0; i < strlen(str); i++) {
+        if (str[i] == ';') {
+            if (nameIndex > 0) {
+                name[nameIndex] = '\0'; 
+                Facts* newFact = createFact(name);
+                factlist = addFact(factlist, newFact);
+                nameIndex = 0;
             }
-            else{
-                if(strlen(factlist->name)==0){
-                    strcpy(factlist->name,name);
-                }
-                else{
-                   Facts* newFact= createFact(name);
-                   factlist= addFact(factlist,newFact);
-                }
-                 strcpy(name,"");   
-            }        
+            return factlist;
+        } else if (str[i] != ' ') {
+            name[nameIndex++] = str[i];
+        } else {
+            if (nameIndex > 0) {
+                name[nameIndex] = '\0'; 
+                Facts* newFact = createFact(name);
+                factlist = addFact(factlist, newFact);
+                nameIndex = 0;
+            }
         }
     }
-    //free(name);
-    return NULL;
+    return factlist;
 }
 
 Rules* writeRules(char* data) {
     char token[50];
     char content[50];
-    strcpy(content,data);
-    strcpy(token,strtok(content, "->"));
-    if(token != NULL){
-        //printf("token : %s\n",token);
-        //ici on va gérer les facts
-        char* lst= malloc(sizeof(token)+2);
-        strcpy(lst,token);
-        strncat(lst,";",1);
+    strcpy(content, data);
+    strcpy(token, strtok(content, "->"));
+    if (token != NULL) {
+        char* lst = malloc(strlen(token) + 2);
+        if (lst == NULL) {
+            perror("Allocation error");
+            exit(EXIT_FAILURE);
+        }
+        strcpy(lst, token);
+        strncat(lst, ";", 1);
         Facts* fact = writeFacts(lst);
-        strcpy(token,strtok(NULL, "->"));
-        if(token != NULL) {
-            Rules* rule= malloc(sizeof(Rules));
-            rule=createRule(fact,token);
-           return rule;
+        free(lst); 
+        strcpy(token, strtok(NULL, "->"));
+        if (token != NULL) {
+            Rules* rule = malloc(sizeof(Rules)); 
+            if (rule == NULL) {
+                perror("Allocation error");
+                exit(EXIT_FAILURE);
+            }
+            rule = createRule(fact, token);
+            return rule;
         }
     }
-    free(token);
-    free(content);
     return NULL;
 }
 
 Rules * charToRules(char * data){
-    Rules* lst=NULL;
-    char* name=malloc(200*sizeof(char));
-    strcpy(name, "\0");
+    Rules* lst = NULL;
+    char* name = malloc(strlen(data) + 1); 
+    if (name == NULL) {
+        perror("Allocation error");
+        exit(EXIT_FAILURE);
+    }
+    strcpy(name, "");
     int cpt = 0;
-    for(long i=0;i<=strlen(data);i++){
-        if(data[i]==59){
-            printf("%d\n",cpt);
-           lst=addRules(lst,writeRules(name));
-           strcpy(name,"\0");  
-           cpt+=1;
+    for(long i = 0; i <= strlen(data); i++){
+        if(data[i] == 59){
+            printf("%d\n", cpt);
+            lst = addRules(lst, writeRules(name));
+            strcpy(name, "");  
+            cpt += 1;
         }
         else{
-            strncat(name,&data[i],1);
+            strncat(name, &data[i], 1);
         }
     }
     free(name);
@@ -415,8 +422,6 @@ void menu() {
                 tests();
                 break;
             case 2:
-            //char * test = readRulesFile("test2.kbs");
-            //Rules * list = charToRules(test);
             showRules(list);
                 break;
             case 3:
