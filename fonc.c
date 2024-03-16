@@ -382,3 +382,45 @@ void tests(){
     free(fact4);
 
 }
+
+
+void menu() {
+    int choix;
+    bool quitter = false;
+    char* Fact= malloc(20*sizeof(char));
+    char * test = readRulesFile("rules.kbs");
+    Rules * list = charToRules(test);
+
+    do {
+        printf("\n------ Menu ------\n");
+        printf("1. Tests\n");
+        printf("2. Afficher les règles du fichier\n");
+        printf("3. ForwardChain\n");
+        printf("4. BackwardChain\n");
+        printf("5. Quitter\n");
+        printf("Choix: ");
+        scanf("%d", &choix);
+        switch (choix) {
+            case 1:
+                tests();
+                break;
+            case 2:
+            char * test = readRulesFile("rules.kbs");
+            Rules * list = charToRules(test);
+            showRules(list);
+                break;
+            case 3:
+                printf("\nForward Chain \n");
+                break;
+            case 4 :
+                printf("\nBackward Chain \n");
+                break;
+            case 5:
+                quitter = true;
+                break;
+            default:
+                printf("Choix invalide. Veuillez choisir une option valide.\n");
+                break;
+        }
+    } while (!quitter);
+}
