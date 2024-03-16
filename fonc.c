@@ -16,9 +16,8 @@ Facts* initFacts() {
 Rules* initRules() {
     Rules* lst=malloc(sizeof(Rules));
     lst->name=malloc(20*sizeof(char));
-    strcpy(lst->name,"temp");
     lst -> next=NULL;
-    lst->factList = initFacts();
+   lst->factList = initFacts();
     return lst; 
 }
 
@@ -70,89 +69,84 @@ void saveRulesFile(char * name, char * data){
 // Fonction pour chaîner en arrière
 int backwardChain(char *but, Rules *baseRules, Facts *baseFacts) {
     int result = 0;
-    // Si le but n'est pas dans la base de faits
     if (!findFact(baseFacts, but)) {
         Rules *rule = baseRules;
-        // Tant qu'il y a des règles et que le résultat n'est pas trouvé
         while (rule != NULL && !result) {
-            // Si la conclusion de la règle est le but
             if (strcmp(rule->name, but) == 0) {
                 Facts *hypothesis = rule->factList;
                 int continueFlag = 1;
-                // Tant qu'il y a des hypothèses et que la boucle continue
                 while (hypothesis != NULL && continueFlag) {
-                    // On vérifie chaque hypothèse par chaînage arrière
                     continueFlag = backwardChain(hypothesis->name, baseRules, baseFacts);
                     hypothesis = hypothesis->next;
                 }
-                // Si toutes les hypothèses sont vraies, la conclusion est vraie
                 result = continueFlag;
             }
             rule = rule->next;
         }
     } else {
-        // Le but est dans la base de faits, donc la conclusion est vraie
         result = 1;
     }
     return result;
 }
 
-Rules* forwardChain(Facts* factBase, Rules* ruleBase) {
-  Rules* applicableRules = NULL;
-  Rules* tmpRule = ruleBase;
+Rules* forwardChain(Rules* base_de_regles, Facts* base_de_faits) {
+  Rules* tmp = base_de_regles;
+  Rules* trueList = NULL;
+  while (tmp != NULL) {
+    if (verifRegles(base_de_faits, tmp) == 1) {
+      // On appelle la fonction `ajouteRegle` pour ajouter la règle à la liste `trueList`
+      //ajouteRegle(trueList, tmp);
+      Rules* copy = initRules();
+      strcpy(copy->name,tmp->name);
+      copy->factList=tmp->factList;
+      copy->next=NULL;
+      trueList=addRules(trueList,copy);
+      }
 
-  while (tmpRule != NULL) {
-    bool isApplicable = true;
-    Facts* tmpFact = tmpRule->factList;
+    tmp = tmp->next;
+  }
+  return trueList;
+}
 
-    while (tmpFact != NULL) {
-      if (!isInFactBase(factBase, tmpFact)) {
-        isApplicable = false;
+
+
+int verifFait(Facts* factList, Facts* fait) {
+  Facts* tmp = factList;
+  int answer = 0;
+
+  while (tmp != NULL) {
+    if (strcmp(tmp->name, fait->name) == 0) {
+      answer = 1;
+      break;
+    }
+    tmp = tmp->next;
+  }
+  return answer;
+}
+	
+int verifRegles(Facts* factList, Rules* regle) {
+  int resultat = 1;
+  Rules* tmp = regle;
+  Facts* tmp2 = regle->factList;
+
+  while (tmp != NULL) {
+    while (tmp2 != NULL) {
+      if (verifFait(factList, tmp2) == 0) {
+        resultat = 0;
         break;
       }
-      tmpFact = tmpFact->next;
+      tmp2 = tmp2->next;
     }
 
-    if (isApplicable) {
-      // Ajout de la règle applicable à la liste
-      Rules* newRule = (Rules*)malloc(sizeof(Rules));
-      newRule->name = tmpRule->name;
-      newRule->next = NULL;
-
-      if (applicableRules == NULL) {
-        applicableRules = newRule;
-      } else {
-        Rules* tmpApplicableRule = applicableRules;
-        while (tmpApplicableRule->next != NULL) {
-          tmpApplicableRule = tmpApplicableRule->next;
-        }
-        tmpApplicableRule->next = newRule;
-      }
+    if (resultat == 0) {
+      break;
     }
 
-    // Avancer dans la liste des règles même si la règle n'est pas applicable
-    Rules* prevRule = NULL;
-    Rules* tmpDeleteRule = ruleBase;
-
-    while (tmpDeleteRule != tmpRule) {
-      prevRule = tmpDeleteRule;
-      tmpDeleteRule = tmpDeleteRule->next;
-    }
-
-    if (isApplicable) {
-      tmpRule = tmpRule->next;
-    } else {
-      if (prevRule == NULL) {
-        ruleBase = ruleBase->next;  // rule is the head
-      } else {
-        prevRule->next = tmpRule->next;  // Remove the rule from the linked list
-      }
-      free(tmpRule);  // Free the memory allocated for the rule
-      tmpRule = ruleBase; // Move to the next rule after deletion
-    }
+    tmp2 = regle->factList;
+    tmp = tmp->next;
   }
 
-  return applicableRules;
+  return resultat;
 }
 
 bool isInFactBase(Facts* factBase, Facts* fact) {
@@ -189,13 +183,19 @@ Facts * addFact(Facts* lst,Facts* elm) {
 }
 
 Rules * addRules(Rules* lst,Rules* elm) {
+    if(lst!=NULL){
     Rules * copy = lst ;
      while(copy->next != NULL){
          copy=copy->next;
      }
      copy->next = elm;
      elm->next=NULL;
+    }else{
+        lst=elm;
+        lst->next=NULL;
+    }
      return lst;
+    
 }
 
 void showRules(Rules* lst) {
@@ -294,15 +294,11 @@ Rules* writeRules(char* data) {
 }
 
 Rules * charToRules(char * data){
-    Rules* lst=initRules();
+    Rules* lst=NULL;
     char* name=malloc(20*sizeof(char));
     strcpy(name, "\0");
     for(int i=0;i<=strlen(data);i++){
-        if(strcmp(lst->name,"temp")==0 && data[i]==59){
-            lst = writeRules(name);
-            strcpy(name,"\0");  
-        }
-        else if(data[i]==59){
+        if(data[i]==59){
            lst=addRules(lst,writeRules(name));
            strcpy(name,"\0");  
         }
@@ -311,4 +307,78 @@ Rules * charToRules(char * data){
         }
     }
     return lst;
+}
+
+void tests(){
+    //Test1
+    char* data = readRulesFile("rules.kbs");
+    if (data != NULL) {
+        printf("Test readRulesFile: Passed\n");
+        printf("Data read from file: %s\n", data);
+    } else {
+        printf("Test readRulesFile: Failed\n");
+    }
+
+
+    //TestForward
+     // Création de quelques faits factices
+    Facts* base_de_faits = initFacts();
+    Facts* fact1 = createFact("Fact1");
+    Facts* fact2 = createFact("Fact2");
+    Facts* fact3 = createFact("Fact3");
+    Facts* fact4 = createFact("Fact4");
+    // Ajout des faits à la base de faits
+    base_de_faits = addFact(base_de_faits, fact1);
+    Rules* base_de_regles = NULL;
+    Facts* rule1_facts = initFacts();
+    Facts* rule2_facts = initFacts();
+
+    Facts* rule1_fact1 = createFact("Fact1");
+    Facts* rule1_fact2 = createFact("Fact2");
+    Facts* rule2_fact3 = createFact("Fact3");
+    Facts* rule2_fact4 = createFact("Fact4");
+
+    rule1_facts = addFact(rule1_facts, rule1_fact1);
+    rule1_facts = addFact(rule1_facts, rule1_fact2);
+    rule2_facts = addFact(rule2_facts, rule2_fact3);
+    rule2_facts = addFact(rule2_facts, rule2_fact4);
+ 
+    Rules* rule1 = createRule(rule1_facts, "Rule1");
+    Rules* rule2 = createRule(rule2_facts, "Rule2");
+
+    base_de_regles = addRules(base_de_regles, rule1);
+    base_de_regles = addRules(base_de_regles, rule2);
+    printf("Forward chaining result:\n");
+    Rules* trueList = forwardChain(base_de_regles, base_de_faits);
+    showRules(trueList);
+
+
+     base_de_faits = addFact(base_de_faits, fact2);
+     trueList = forwardChain(base_de_regles, base_de_faits);
+     showRules(trueList);
+
+      base_de_faits = addFact(base_de_faits, fact3);
+      trueList = forwardChain(base_de_regles, base_de_faits);
+      showRules(trueList);
+
+    printf("Test forwardChain: Passed\n");
+
+
+    printf("backward test :\n");
+    if(backwardChain("Fact3",base_de_regles,base_de_faits)==1) {
+        printf("backward test 1 passed\n");
+    }
+     if(backwardChain("Cr",base_de_regles,base_de_faits)==0) {
+        printf("backward test 2 passed\n");
+    }
+
+
+    free(base_de_faits);
+    free(trueList);
+    free(base_de_regles);
+    free(fact1);
+    free(fact2);
+    free(fact3);
+    free(fact4);
+
 }

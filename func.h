@@ -22,11 +22,10 @@ Rules* initRules() ;
 char * readRulesFile(char *);
 void saveRulesFile(char * name, char * data);
 int backwardChain(char *but, Rules *baseRules, Facts *baseFacts);
-Rules* forwardChain(Facts* factBase, Rules* ruleBase);
+//Rules* forwardChain(Facts* factBase, Rules* ruleBase);
 bool isInFactBase(Facts* factBase, Facts* fact);
 Facts *findFact(Facts *base, char *name);
 
-Rules * readInv(char * content);
 Rules * addRules(Rules* lst,Rules* elm);
 Facts * addFact(Facts* lst,Facts* elm);
 void showRules(Rules* lst);
@@ -38,3 +37,8 @@ void showFacts(Facts* factlist);
 Rules* writeRules(char* data);
 
 Rules * charToRules(char * data);
+int verifFait(Facts* factBase, Facts* fact);
+int verifRegles(Facts* factList, Rules* regle);
+Rules* forwardChain(Rules* base_de_regles,Facts * base_de_faits);    
+
+void tests();
