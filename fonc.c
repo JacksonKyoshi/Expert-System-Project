@@ -69,28 +69,21 @@ void saveRulesFile(char * name, char * data){
 // Fonction pour chaîner en arrière
 int backwardChain(char *but, Rules *baseRules, Facts *baseFacts) {
     int result = 0;
-    // Si le but n'est pas dans la base de faits
     if (!findFact(baseFacts, but)) {
         Rules *rule = baseRules;
-        // Tant qu'il y a des règles et que le résultat n'est pas trouvé
         while (rule != NULL && !result) {
-            // Si la conclusion de la règle est le but
             if (strcmp(rule->name, but) == 0) {
                 Facts *hypothesis = rule->factList;
                 int continueFlag = 1;
-                // Tant qu'il y a des hypothèses et que la boucle continue
                 while (hypothesis != NULL && continueFlag) {
-                    // On vérifie chaque hypothèse par chaînage arrière
                     continueFlag = backwardChain(hypothesis->name, baseRules, baseFacts);
                     hypothesis = hypothesis->next;
                 }
-                // Si toutes les hypothèses sont vraies, la conclusion est vraie
                 result = continueFlag;
             }
             rule = rule->next;
         }
     } else {
-        // Le but est dans la base de faits, donc la conclusion est vraie
         result = 1;
     }
     return result;
@@ -369,5 +362,23 @@ void tests(){
       showRules(trueList);
 
     printf("Test forwardChain: Passed\n");
+
+
+    printf("backward test :\n");
+    if(backwardChain("Fact3",base_de_regles,base_de_faits)==1) {
+        printf("backward test 1 passed\n");
+    }
+     if(backwardChain("Cr",base_de_regles,base_de_faits)==0) {
+        printf("backward test 2 passed\n");
+    }
+
+
+    free(base_de_faits);
+    free(trueList);
+    free(base_de_regles);
+    free(fact1);
+    free(fact2);
+    free(fact3);
+    free(fact4);
 
 }
