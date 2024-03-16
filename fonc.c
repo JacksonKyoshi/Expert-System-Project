@@ -16,9 +16,8 @@ Facts* initFacts() {
 Rules* initRules() {
     Rules* lst=malloc(sizeof(Rules));
     lst->name=malloc(20*sizeof(char));
-    strcpy(lst->name,"temp");
     lst -> next=NULL;
-    lst->factList = initFacts();
+   lst->factList = initFacts();
     return lst; 
 }
 
@@ -99,8 +98,7 @@ int backwardChain(char *but, Rules *baseRules, Facts *baseFacts) {
 
 Rules* forwardChain(Rules* base_de_regles, Facts* base_de_faits) {
   Rules* tmp = base_de_regles;
-  Rules* trueList = initRules();
-
+  Rules* trueList = NULL;
   while (tmp != NULL) {
     if (verifRegles(base_de_faits, tmp) == 1) {
       // On appelle la fonction `ajouteRegle` pour ajouter la règle à la liste `trueList`
@@ -114,7 +112,6 @@ Rules* forwardChain(Rules* base_de_regles, Facts* base_de_faits) {
 
     tmp = tmp->next;
   }
-  showRules(trueList);
   return trueList;
 }
 
@@ -193,13 +190,19 @@ Facts * addFact(Facts* lst,Facts* elm) {
 }
 
 Rules * addRules(Rules* lst,Rules* elm) {
+    if(lst!=NULL){
     Rules * copy = lst ;
      while(copy->next != NULL){
          copy=copy->next;
      }
      copy->next = elm;
      elm->next=NULL;
+    }else{
+        lst=elm;
+        lst->next=NULL;
+    }
      return lst;
+    
 }
 
 void showRules(Rules* lst) {
@@ -298,15 +301,11 @@ Rules* writeRules(char* data) {
 }
 
 Rules * charToRules(char * data){
-    Rules* lst=initRules();
+    Rules* lst=NULL;
     char* name=malloc(20*sizeof(char));
     strcpy(name, "\0");
     for(int i=0;i<=strlen(data);i++){
-        if(strcmp(lst->name,"temp")==0 && data[i]==59){
-            lst = writeRules(name);
-            strcpy(name,"\0");  
-        }
-        else if(data[i]==59){
+        if(data[i]==59){
            lst=addRules(lst,writeRules(name));
            strcpy(name,"\0");  
         }
