@@ -4,34 +4,34 @@
 #include "func.h"
 #include <stdbool.h>
 
-//first commit
-
+//intialise a fact
 Facts* initFacts() {
     Facts* lst = malloc(sizeof(Facts));
-    lst->name =malloc(20*sizeof(char));
+    lst->name =malloc(200*sizeof(char));
     lst ->next= NULL;
     return lst;
 }
-
+//initialise a rule
 Rules* initRules() {
     Rules* lst=malloc(sizeof(Rules));
-    lst->name=malloc(20*sizeof(char));
+    lst->name=malloc(200*sizeof(char));
     lst -> next=NULL;
    lst->factList = initFacts();
     return lst; 
 }
 
+//read the rule file to return a char *
 char * readRulesFile(char * name){
     FILE * file = fopen(name,"r");
-    char * result = malloc(sizeof(char)*1000);
+    char * result = malloc(sizeof(char)*5000);
     char character;
 
-    if (file == NULL) {
+    if (file == NULL) {//condition to manage errors when opening the file rule
         perror("Error opening file");
         exit(EXIT_FAILURE);
     }
 
-    do{
+    do{//loop on each character to save the into the char * result
          if(character != '\n'){
             sprintf(result + strlen(result), "%c", character);
         }
@@ -41,6 +41,7 @@ char * readRulesFile(char * name){
     return result;
 }
 
+//function to save a rule file from char *
 void saveRulesFile(char * name, char * data){
     FILE * file = fopen(name, "w");
     int cpt = 0;
@@ -244,7 +245,7 @@ void showFacts(Facts* factlist){
 
 //str sera une seule ligne donc de la première lettre à un point virgule.
 Facts* writeFacts(char* str) {
-    char* name=malloc(20*sizeof(char));
+    char* name=malloc(200*sizeof(char));
     strcpy(name, "\0");
     Facts* factlist=initFacts();
     for(int i=0;i<strlen(str);i++){
@@ -272,8 +273,8 @@ Facts* writeFacts(char* str) {
 }
 
 Rules* writeRules(char* data) {
-    char* token=malloc(100*sizeof(char));
-    char* content = malloc(100*sizeof(char));
+    char* token=malloc(1000*sizeof(char));
+    char* content = malloc(1000*sizeof(char));
     strcpy(content,data);
     token = strtok(content, "->");
     if(token != NULL){
@@ -295,7 +296,7 @@ Rules* writeRules(char* data) {
 
 Rules * charToRules(char * data){
     Rules* lst=NULL;
-    char* name=malloc(20*sizeof(char));
+    char* name=malloc(200*sizeof(char));
     strcpy(name, "\0");
     for(int i=0;i<=strlen(data);i++){
         if(data[i]==59){
@@ -387,8 +388,8 @@ void tests(){
 void menu() {
     int choix;
     bool quitter = false;
-    char* Fact= malloc(20*sizeof(char));
-    char * test = readRulesFile("rules.kbs");
+    char* Fact= malloc(200*sizeof(char));
+    char * test = readRulesFile("test2.kbs");
     Rules * list = charToRules(test);
 
     do {
@@ -405,7 +406,7 @@ void menu() {
                 tests();
                 break;
             case 2:
-            char * test = readRulesFile("rules.kbs");
+            char * test = readRulesFile("test2.kbs");
             Rules * list = charToRules(test);
             showRules(list);
                 break;
