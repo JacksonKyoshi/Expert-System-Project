@@ -11,7 +11,7 @@ int initSDL(SDL_Window** window, SDL_Renderer** renderer) {
     }
 
     // Create window
-    *window = SDL_CreateWindow("SDL Rectangle with Text",
+    *window = SDL_CreateWindow("System KDO expert",
                                 SDL_WINDOWPOS_UNDEFINED,
                                 SDL_WINDOWPOS_UNDEFINED,
                                 1400, // Initial window width
@@ -100,6 +100,7 @@ void showRulesSDL(SDL_Renderer* renderer,Rules* lst, TTF_Font* font, SDL_Color c
     int y=40;
     Rules * copy = lst;
     char * temp = malloc(sizeof(char)*100);
+    strcpy(temp,"");
     while(copy != NULL) {
     strcat(temp, "|");
     strcat(temp, copy->name);
@@ -135,35 +136,51 @@ void closeSDL(SDL_Window* window, SDL_Renderer* renderer) {
     TTF_Quit();
     SDL_Quit();
 }
-void menu2(SDL_Renderer* renderer, TTF_Font* font, SDL_Color textColor, int newWidth, int newHeight, int hobby, int age, int relation, int budget, int Idee, int scroll){
+SDL_Color testColor(int *cpt, int test, SDL_Color non, SDL_Color oui) {
+    if (*cpt == test) {
+        (*cpt)++;
+        return oui;
+    } else {
+        (*cpt)++;
+        return non;
+    }
+}
 
+void menu2(SDL_Renderer* renderer, TTF_Font* font, SDL_Color textColor, int newWidth, int newHeight, int hobby, int age, int relation, int budget, int Idee, int scroll){
+		int c=1;
+		int *cpt= &c;
+            SDL_Color color2 = {0, 255, 0, 255};
             drawTextOnRectangle(renderer, "Hobbies :", newWidth/15, newHeight/10, font, textColor);
-                        drawTextOnRectangle(renderer, "Lecture", newWidth/15*2.7, newHeight/10, font, textColor);
-                        drawTextOnRectangle(renderer, "Cinema", newWidth/15*4, newHeight/10, font, textColor);
-                        drawTextOnRectangle(renderer, "Plein air", newWidth/15*5.5, newHeight/10, font, textColor);
-                        drawTextOnRectangle(renderer, "Technologie", newWidth/15*7, newHeight/10, font, textColor);
-                        drawTextOnRectangle(renderer, "Cuisine", newWidth/15*9, newHeight/10, font, textColor);
-                        drawTextOnRectangle(renderer, "Musique", newWidth/15*10.5, newHeight/10, font, textColor);
-                        drawTextOnRectangle(renderer, "Voyage", newWidth/15*12, newHeight/10, font, textColor);
-                        drawTextOnRectangle(renderer, "Art", newWidth/15*13.4, newHeight/10, font, textColor);
-                        drawTextOnRectangle(renderer, "Vin", newWidth/15*14.1, newHeight/10, font, textColor);
-                        
+                        drawTextOnRectangle(renderer, "Lecture", newWidth/15*2.7, newHeight/10, font, testColor(cpt, hobby, textColor, color2));
+                        drawTextOnRectangle(renderer, "Cinema", newWidth/15*4, newHeight/10, font, testColor(cpt, hobby, textColor, color2));
+                        drawTextOnRectangle(renderer, "Plein air", newWidth/15*5.5, newHeight/10, font, testColor(cpt, hobby, textColor, color2));
+                        drawTextOnRectangle(renderer, "Technologie", newWidth/15*7, newHeight/10, font, testColor(cpt, hobby, textColor, color2));
+                        drawTextOnRectangle(renderer, "Cuisine", newWidth/15*9, newHeight/10, font, testColor(cpt, hobby, textColor, color2));
+                        drawTextOnRectangle(renderer, "Musique", newWidth/15*10.5, newHeight/10, font, testColor(cpt, hobby, textColor, color2));
+                        drawTextOnRectangle(renderer, "Voyage", newWidth/15*12, newHeight/10, font, testColor(cpt, hobby, textColor, color2));
+                        drawTextOnRectangle(renderer, "Art", newWidth/15*13.4, newHeight/10, font, testColor(cpt, hobby, textColor, color2));
+                        drawTextOnRectangle(renderer, "Vin", newWidth/15*14.1, newHeight/10, font, testColor(cpt, hobby, textColor, color2));
+                       
+            (*cpt)=1;            
             drawTextOnRectangle(renderer, "Age :", newWidth/15, newHeight/10*2.5, font, textColor);
-            		drawTextOnRectangle(renderer, "-18 ans", newWidth/4, newHeight/10*2.5, font, textColor);
-                        drawTextOnRectangle(renderer, "adulte", newWidth/4*2, newHeight/10*2.5, font, textColor);
-                        drawTextOnRectangle(renderer, "senior", newWidth/4*3, newHeight/10*2.5, font, textColor);
+            		drawTextOnRectangle(renderer, "-18 ans", newWidth/4, newHeight/10*2.5, font, testColor(cpt, age, textColor, color2));
+                        drawTextOnRectangle(renderer, "adulte", newWidth/4*2, newHeight/10*2.5, font, testColor(cpt, age, textColor, color2));
+                        drawTextOnRectangle(renderer, "senior", newWidth/4*3, newHeight/10*2.5, font, testColor(cpt, age, textColor, color2));
             	
+            (*cpt)=1; 
             drawTextOnRectangle(renderer, "Relation :", newWidth/15, newHeight/10*4, font, textColor);
-            		drawTextOnRectangle(renderer, "enfant", newWidth/4, newHeight/10*4, font, textColor);
-                        drawTextOnRectangle(renderer, "famille", newWidth/4*2, newHeight/10*4, font, textColor);
-                        drawTextOnRectangle(renderer, "couple", newWidth/4*3, newHeight/10*4, font, textColor);
-                        drawTextOnRectangle(renderer, "ami", newWidth/4*3.5, newHeight/10*4, font, textColor);
+            		drawTextOnRectangle(renderer, "enfant", newWidth/4, newHeight/10*4, font, testColor(cpt, relation, textColor, color2));
+                        drawTextOnRectangle(renderer, "famille", newWidth/4*2, newHeight/10*4, font, testColor(cpt, relation, textColor, color2));
+                        drawTextOnRectangle(renderer, "couple", newWidth/4*3, newHeight/10*4, font, testColor(cpt, relation, textColor, color2));
+                        drawTextOnRectangle(renderer, "ami", newWidth/4*3.5, newHeight/10*4, font, testColor(cpt, relation, textColor, color2));
             	
+            (*cpt)=1; 
             drawTextOnRectangle(renderer, "Budget", newWidth/15, newHeight/10*5.5, font, textColor);
-            		drawTextOnRectangle(renderer, "<20", newWidth/4, newHeight/10*5.5, font, textColor);
-                        drawTextOnRectangle(renderer, "[20;10]", newWidth/4*2, newHeight/10*5.5, font, textColor);
-                        drawTextOnRectangle(renderer, ">100", newWidth/4*3, newHeight/10*5.5, font, textColor);
+            		drawTextOnRectangle(renderer, "<20", newWidth/4, newHeight/10*5.5, font, testColor(cpt, budget, textColor, color2));
+                        drawTextOnRectangle(renderer, "[20;10]", newWidth/4*2, newHeight/10*5.5, font, testColor(cpt, budget, textColor, color2));
+                        drawTextOnRectangle(renderer, ">100", newWidth/4*3, newHeight/10*5.5, font, testColor(cpt, budget, textColor, color2));
             	
+            (*cpt)=1; 
             drawTextOnRectangle(renderer, "Idees cadeau :", newWidth/15, newHeight/10*7, font, textColor);
             		drawTextOnRectangle(renderer, "-", newWidth/15*3.5, newHeight/10*7, font, textColor);
             		drawTextOnRectangle(renderer, "+", newWidth/15*14, newHeight/10*7, font, textColor);
@@ -288,15 +305,115 @@ int main(int argc, char* args[]) {
                             }
                             if (mouseX > newWidth/15*3.5 && mouseX < newWidth/15*3.5 +30 && mouseY > newHeight/10*7 && mouseY < newHeight/10*7 + 40) {
                                 if(scroll>0){
-                                printf("GUCHI GANG");
                                 scroll--;}
                                 }
                             if (mouseX > newWidth/15*14 && mouseX < newWidth/15*14 +30 && mouseY > newHeight/10*7 && mouseY < newHeight/10*7 + 40) {
                                 if(scroll<2){
-                                printf("GUCHI GANG");
                                 scroll++;}
                             }
-                            
+                            if (mouseY > newHeight/10 && mouseY < newHeight/10 + 50){
+                                if(mouseX > newWidth/15*2.7 && mouseX < newWidth/15*2.7+110 && (hobby==1 || hobby ==0)){
+                                if(hobby==0){
+                                hobby=1;}
+                                else{hobby=0;}
+                                }
+                                if(mouseX > newWidth/15*4 && mouseX < newWidth/15*4+110 && (hobby==2 || hobby ==0)){
+                                if(hobby==0){
+                                	hobby=2;}
+                                else{hobby=0;}
+                                }
+                                if(mouseX > newWidth/15*5.5 && mouseX < newWidth/15*5.5+110 && (hobby==3 || hobby ==0)){
+                                if(hobby==0){
+                                	hobby=3;}
+                                else{hobby=0;}
+                                }
+                                if(mouseX > newWidth/15*7 && mouseX < newWidth/15*7+110 && (hobby==4 || hobby ==0)){
+                                if(hobby==0){
+                                	hobby=4;}
+                                else{hobby=0;}
+                                }
+                                if(mouseX > newWidth/15*9 && mouseX < newWidth/15*9+170 && (hobby==5 || hobby ==0)){
+                                if(hobby==0){
+                                	hobby=5;}
+                                else{hobby=0;}
+                                }
+                                if(mouseX > newWidth/15*10.5 && mouseX < newWidth/15*10.5+90 && (hobby==6 || hobby ==0)){
+                                if(hobby==0){
+                                	hobby=6;}
+                                else{hobby=0;}
+                                }
+                                if(mouseX > newWidth/15*12 && mouseX < newWidth/15*12+100 && (hobby==7 || hobby ==0)){
+                                if(hobby==0){
+                                	hobby=7;}
+                                else{hobby=0;}
+                                }
+                                if(mouseX > newWidth/15*13.4 && mouseX < newWidth/15*13.4+50 && (hobby==8 || hobby ==0)){
+                                if(hobby==0){
+                                	hobby=8;}
+                                else{hobby=0;}
+                                }
+                                if(mouseX > newWidth/15*14.1 && mouseX < newWidth/15*14.1+50 && (hobby==9 || hobby ==0)){
+                                if(hobby==0){
+                                	hobby=9;}
+                                else{hobby=0;}
+                                }
+                                
+                            }
+                            if (mouseY > newHeight/10*2.5 && mouseY < newHeight/10*2.5 + 60){
+                                if(mouseX > newWidth/4 && mouseX < newWidth/4+110 && (age==1 || age ==0)){
+                                if(age==0){
+                                age=1;}
+                                else{age=0;}
+                                }
+                                if(mouseX > newWidth/4*2 && mouseX < newWidth/4*2+110 && (age==2 || age ==0)){
+                                if(age==0){
+                                age=2;}
+                                else{age=0;}
+                                }if(mouseX > newWidth/4*3 && mouseX < newWidth/4*3+110 && (age==3 || age ==0)){
+                                if(age==0){
+                                age=3;}
+                                else{age=0;}
+                                }
+                                }
+                            if (mouseY > newHeight/10*4 && mouseY < newHeight/10*4 + 60){
+                                if(mouseX > newWidth/4 && mouseX < newWidth/4+100 && (relation==1 || relation ==0)){
+                                if(relation==0){
+                                relation=1;}
+                                else{relation=0;}
+                                }
+                                if(mouseX > newWidth/4*2 && mouseX < newWidth/4*2+110 && (relation==2 || relation ==0)){
+                                if(relation==0){
+                                relation=2;}
+                                else{relation=0;}
+                                }
+                                if(mouseX > newWidth/4*3 && mouseX < newWidth/4*3+100 && (relation==3 || relation ==0)){
+                                if(relation==0){
+                                relation=3;}
+                                else{relation=0;}
+                                }
+                                if(mouseX > newWidth/4*3.5 && mouseX < newWidth/4*3.5+70 && (relation==4 || relation ==0)){
+                                if(relation==0){
+                                relation=4;}
+                                else{relation=0;}
+                                }
+                                }
+                                if (mouseY > newHeight/10*5.5 && mouseY < newHeight/10*5.5 + 60){
+                                if(mouseX > newWidth/4 && mouseX < newWidth/4+70 && (budget==1 || budget ==0)){
+                                if(budget==0){
+                                budget=1;}
+                                else{budget=0;}
+                                }
+                                if(mouseX > newWidth/4*2 && mouseX < newWidth/4*2+100 && (budget==2 || budget ==0)){
+                                if(budget==0){
+                                budget=2;}
+                                else{budget=0;}
+                                }
+                                if(mouseX > newWidth/4*3 && mouseX < newWidth/4*3+80 && (budget==3 || budget ==0)){
+                                if(budget==0){
+                                budget=3;}
+                                else{budget=0;}
+                                }
+                                }
                         }
                         else if (menu ==3) {
                             if (mouseX > 0 && mouseX < 140 && mouseY > newHeight*0.9 && mouseY < newHeight*0.9 + 50) {
