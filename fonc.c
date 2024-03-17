@@ -409,7 +409,6 @@ void tests(){
     Facts* fact1 = createFact("Fact1");
     Facts* fact2 = createFact("Fact2");
     Facts* fact3 = createFact("Fact3");
-    Facts* fact4 = createFact("Fact4");
     base_de_faits = addFact(base_de_faits, fact1);
     Rules* base_de_regles = NULL;
     Facts* rule1_facts = initFacts();
@@ -476,27 +475,22 @@ void menu() {
     system("clear");
     int choix;
     bool quitter = false;
-    char* Fact= malloc(200*sizeof(char));
     char * test = readRulesFile("rules.kbs");
     Rules * list = charToRules(test);
     char * backward=malloc(20*sizeof(char));
     do {
         printf("\n------ Menu ------\n");
-        printf("1. Tests\n");
-        printf("2. Afficher les règles du fichier\n");
-        printf("3. ForwardChain\n");
-        printf("4. BackwardChain\n");
-        printf("5. Quitter\n");
+        printf("1. Afficher les règles du fichier\n");
+        printf("2. ForwardChain\n");
+        printf("3. BackwardChain\n");
+        printf("4. Quitter\n");
         printf("Choix: ");
         scanf("%d", &choix);
         switch (choix) {
             case 1:
-                tests();
-                break;
-            case 2:
             showRules(list);
             break;
-            case 3 :
+            case 2 :
                 printf("\nForward Chain \n");
                 Facts * factlistForward  = createFactlist();
                 Rules * gift = forwardChain(list,factlistForward);
@@ -507,7 +501,7 @@ void menu() {
                     printf("Aucun résultat\n");
                 }
                 break;
-            case 4 :
+            case 3 :
                 printf("\nBackward Chain \n");
                 Facts * factlistBack  = createFactlist();
                 printf("\nentrez le name : ");
@@ -520,7 +514,7 @@ void menu() {
                     printf("\nBACKWARD : FALSE");
                 }
                 break;
-            case 5:
+            case 4:
                 quitter = true;
                 break;
             default:
