@@ -75,6 +75,7 @@ void saveRulesFile(char * name, char * data){
             character = '?';
         }
     }while(character != '?');
+    printf("aie");
 }
 
 /// @brief remove all the Spaces of a char list (char*)

@@ -24,7 +24,7 @@ void saveRulesFile(char * name, char * data);
 int backwardChain(char *but, Rules *baseRules, Facts *baseFacts);
 //Rules* forwardChain(Facts* factBase, Rules* ruleBase);
 bool isInFactBase(Facts* factBase, Facts* fact);
-Facts *findFact(Facts *base, char *name);
+int findFact(Facts *list, char *name);
 
 Rules * addRules(Rules* lst,Rules* elm);
 Facts * addFact(Facts* lst,Facts* elm);
@@ -39,7 +39,8 @@ Rules* writeRules(char* data);
 Rules * charToRules(char * data);
 int verifFait(Facts* factBase, Facts* fact);
 int verifRegles(Facts* factList, Rules* regle);
-Rules* forwardChain(Rules* base_de_regles,Facts * base_de_faits);    
+Rules* forwardChain(Rules* base_de_regles,Facts * base_de_faits);   
+void removeSpaces(char *str); 
 
 void tests();
 
