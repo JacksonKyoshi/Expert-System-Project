@@ -42,3 +42,6 @@ int verifRegles(Facts* factList, Rules* regle);
 Rules* forwardChain(Rules* base_de_regles,Facts * base_de_faits);    
 
 void tests();
+
+Facts* createFactlist();
+void menu();

@@ -15,7 +15,6 @@ int main(int argc, char ** argv) {
    Facts* fact=createFact("b");
    forwardChain(list,fact);*/
    menu();
-
     return 0;
 
 
