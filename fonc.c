@@ -4,34 +4,41 @@
 #include "func.h"
 #include <stdbool.h>
 
-//intialise a fact
+/// @brief initialize a fact
+/// @return list of facts (empty)
 Facts* initFacts() {
     Facts* lst = malloc(sizeof(Facts));
-    lst->name =malloc(50*sizeof(char));
-    lst ->next= NULL;
+    lst->name = malloc(50*sizeof(char));
+    lst->next = NULL;
     return lst;
 }
-//initialise a rule
+
+/// @brief initialize a rule
+/// @return list of rules (empty)
 Rules* initRules() {
-    Rules* lst=malloc(sizeof(Rules));
-    lst->name=malloc(50*sizeof(char));
-    lst -> next=NULL;
-   lst->factList = initFacts();
+    Rules* lst = malloc(sizeof(Rules));
+    lst->name = malloc(50*sizeof(char));
+    lst->next = NULL;
+    lst->factList = initFacts();
     return lst; 
 }
 
-//read the rule file to return a char *
+/// @brief read the rule file 
+/// @param name of the file
+/// @return char * containing all rules
 char * readRulesFile(char * name){
     FILE * file = fopen(name,"r");
     char * result = malloc(sizeof(char)*10000);
     char character;
 
-    if (file == NULL) {//condition to manage errors when opening the file rule
+    //condition to manage errors when opening the file rule
+    if (file == NULL){
         perror("Error opening file");
         exit(EXIT_FAILURE);
     }
 
-    do{//loop on each character to save the into the char * result
+    //loop on each character to save it into the char * result
+    do{
          if(character != '\n'){
             sprintf(result + strlen(result), "%c", character);
         }
@@ -41,7 +48,9 @@ char * readRulesFile(char * name){
     return result;
 }
 
-//function to save a rule file from char *
+/// @brief save a rule file from a char * with the rule base format
+/// @param name of the file
+/// @param data char * containing all rules 
 void saveRulesFile(char * name, char * data){
     FILE * file = fopen(name, "w");
     int cpt = 0;
@@ -67,7 +76,11 @@ void saveRulesFile(char * name, char * data){
     }while(character != '?');
 }
 
-// Fonction pour chaîner en arrière
+/// @brief backward chaining function
+/// @param but char * of the rule that must be tested
+/// @param baseRules Rules * containing all rules
+/// @param baseFacts Facts * containing all facts that are true (choosed by user)
+/// @return result int 1 if true, 0 if false
 int backwardChain(char *but, Rules *baseRules, Facts *baseFacts) {
     int result = 0;
     if (!findFact(baseFacts, but)) {
@@ -90,13 +103,15 @@ int backwardChain(char *but, Rules *baseRules, Facts *baseFacts) {
     return result;
 }
 
+/// @brief forward chaining function
+/// @param base_de_regles char * containing all rules
+/// @param base_de_faits char * containing all facts that are true (choosed by user)
+/// @return trueList Rules * containing the correct rule 
 Rules* forwardChain(Rules* base_de_regles, Facts* base_de_faits) {
   Rules* tmp = base_de_regles;
   Rules* trueList = NULL;
   while (tmp != NULL) {
     if (verifRegles(base_de_faits, tmp) == 1) {
-      // On appelle la fonction `ajouteRegle` pour ajouter la règle à la liste `trueList`
-      //ajouteRegle(trueList, tmp);
       Rules* copy = initRules();
       strcpy(copy->name,tmp->name);
       copy->factList=tmp->factList;
@@ -109,8 +124,10 @@ Rules* forwardChain(Rules* base_de_regles, Facts* base_de_faits) {
   return trueList;
 }
 
-
-
+/// @brief check if a fact is correct
+/// @param factList Facts * containing all the facts 
+/// @param fait Facts * containing the fact that must be tested 
+/// @return answer int 1 if true, 0 if false
 int verifFait(Facts* factList, Facts* fait) {
   Facts* tmp = factList;
   int answer = 0;
@@ -125,11 +142,14 @@ int verifFait(Facts* factList, Facts* fait) {
   return answer;
 }
 	
+/// @brief check if a rule is correct
+/// @param factList Facts * containing all the facts
+/// @param regle Rules * containing the rule that must be tested
+/// @return resultat int 1 if true, 0 if false
 int verifRegles(Facts* factList, Rules* regle) {
   int resultat = 1;
   Rules* tmp = regle;
   Facts* tmp2 = regle->factList;
-
   while (tmp != NULL) {
     while (tmp2 != NULL) {
       if (verifFait(factList, tmp2) == 0) {
@@ -138,18 +158,19 @@ int verifRegles(Facts* factList, Rules* regle) {
       }
       tmp2 = tmp2->next;
     }
-
     if (resultat == 0) {
       break;
     }
-
     tmp2 = regle->factList;
     tmp = tmp->next;
   }
-
   return resultat;
 }
 
+/// @brief 
+/// @param factBase 
+/// @param fact 
+/// @return 
 bool isInFactBase(Facts* factBase, Facts* fact) {
     if (factBase == NULL || fact == NULL) {
         return false;
@@ -163,6 +184,10 @@ bool isInFactBase(Facts* factBase, Facts* fact) {
     return false;
 }
 
+/// @brief test if a fact is in a fact list
+/// @param base the factlist
+/// @param name the name of the fact that must be tested
+/// @return null or the factlist if it's true
 Facts *findFact(Facts *base, char *name) {
     while (base != NULL) {
         if (strcmp(base->name, name) == 0) {
@@ -173,6 +198,10 @@ Facts *findFact(Facts *base, char *name) {
     return NULL;
 }
 
+/// @brief add a fact in a fact list
+/// @param lst the factlist
+/// @param elm the new fact that we want to add
+/// @return lst Facts * containing all the facts
 Facts * addFact(Facts* lst,Facts* elm) {
     Facts * copy = lst ;
     while(copy->next != NULL){
@@ -183,6 +212,11 @@ Facts * addFact(Facts* lst,Facts* elm) {
     return lst;
 }
 
+
+/// @brief add a new rule in the rule list
+/// @param rule list
+/// @param new rule
+/// @return rule list
 Rules * addRules(Rules* lst,Rules* elm) {
     if(lst!=NULL){
     Rules * copy = lst ;
@@ -198,6 +232,8 @@ Rules * addRules(Rules* lst,Rules* elm) {
      return lst;
 }
 
+/// @brief display function to show the Rule list in terminal
+/// @param rule list
 void showRules(Rules* lst) {
     Rules * copy = lst;
     while(copy != NULL) {
@@ -212,12 +248,19 @@ void showRules(Rules* lst) {
     }
 }
 
+/// @brief create a fact
+/// @param name of the fact
+/// @return the fact
 Facts* createFact(char * name) {
     Facts* fact=initFacts();
     strcpy(fact->name,name);
     return fact;
 }
 
+/// @brief create a rule
+/// @param facts of the rule
+/// @param name of the rule
+/// @return the rule
 Rules* createRule(Facts* facts,char* name) {
     Rules* rule=initRules();
     rule->factList=facts;
@@ -225,6 +268,9 @@ Rules* createRule(Facts* facts,char* name) {
     return rule;
 }
 
+/// @brief delete fact
+/// @param fact 
+/// @return Null
 Facts* deleteFacts(Facts* lst) {
     Facts* copy = lst;
     while(copy != NULL) {
@@ -235,6 +281,9 @@ Facts* deleteFacts(Facts* lst) {
     return NULL; 
 }
 
+/// @brief display function to see the factList
+/// @param factlist 
+/// @return void
 void showFacts(Facts* factlist){
     while(factlist!=NULL){
         printf("| %s |",factlist->name);
@@ -242,7 +291,9 @@ void showFacts(Facts* factlist){
     }
 }
 
-
+/// @brief write a fact from a char *
+/// @param str 
+/// @return factlist
 Facts* writeFacts(char* str) {
     char name[20]; 
     Facts* factlist = initFacts();
@@ -271,6 +322,9 @@ Facts* writeFacts(char* str) {
     return factlist;
 }
 
+/// @brief write rule from the char *
+/// @param data
+/// @return rule or Null
 Rules* writeRules(char* data) {
     char token[50];
     char content[50];
@@ -300,6 +354,9 @@ Rules* writeRules(char* data) {
     return NULL;
 }
 
+/// @brief transform the char * with all rules in a rules list
+/// @param data 
+/// @return rules list
 Rules * charToRules(char * data){
     Rules* lst = NULL;
     char* name = malloc(strlen(data) + 1); 
@@ -311,7 +368,6 @@ Rules * charToRules(char * data){
     int cpt = 0;
     for(long i = 0; i <= strlen(data); i++){
         if(data[i] == 59){
-            printf("%d\n", cpt);
             lst = addRules(lst, writeRules(name));
             strcpy(name, "");  
             cpt += 1;
@@ -324,6 +380,7 @@ Rules * charToRules(char * data){
     return lst;
 }
 
+/// @brief just a test function
 void tests(){
     //Test1
     char* data = readRulesFile("rules.kbs");
@@ -336,13 +393,11 @@ void tests(){
 
 
     //TestForward
-     // Création de quelques faits factices
     Facts* base_de_faits = initFacts();
     Facts* fact1 = createFact("Fact1");
     Facts* fact2 = createFact("Fact2");
     Facts* fact3 = createFact("Fact3");
     Facts* fact4 = createFact("Fact4");
-    // Ajout des faits à la base de faits
     base_de_faits = addFact(base_de_faits, fact1);
     Rules* base_de_regles = NULL;
     Facts* rule1_facts = initFacts();
@@ -398,6 +453,8 @@ void tests(){
 
 }
 
+/// @brief create a fact list
+/// @return fact list
 Facts* createFactlist() {
     bool quitter=false;
     Facts* factlist=initFacts();
@@ -415,7 +472,7 @@ Facts* createFactlist() {
 }
 
 
-
+/// @brief menu in terminal
 void menu() {
     int choix;
     bool quitter = false;
