@@ -9,6 +9,7 @@
 Facts* initFacts() {
     Facts* lst = malloc(sizeof(Facts));
     lst->name = malloc(50*sizeof(char));
+    strcpy(lst->name,"?");
     lst->next = NULL;
     return lst;
 }
@@ -107,6 +108,25 @@ int backwardChain(char *but, Rules *baseRules, Facts *baseFacts) {
 /// @param base_de_regles char * containing all rules
 /// @param base_de_faits char * containing all facts that are true (choosed by user)
 /// @return trueList Rules * containing the correct rule 
+/*
+Rules* forwardChain(Rules* base_de_regles, Facts* base_de_faits) {
+  Rules* tmp = base_de_regles;
+  Rules* trueList = malloc(sizeof(Rules));
+  while (tmp != NULL) {
+    if (verifRegles(base_de_faits, tmp) == 1) {
+      Rules* copy = initRules();
+      strcpy(copy->name,tmp->name);
+      copy->factList=tmp->factList;
+      copy->next=NULL;
+      trueList=addRules(trueList,copy);
+      printf("%s\n",trueList->name);
+      }
+
+    tmp = tmp->next;
+  }
+  return trueList;
+}
+*/
 Rules* forwardChain(Rules* base_de_regles, Facts* base_de_faits) {
   Rules* tmp = base_de_regles;
   Rules* trueList = NULL;
@@ -187,6 +207,10 @@ Facts *findFact(Facts *base, char *name) {
 /// @return lst Facts * containing all the facts
 Facts * addFact(Facts* lst,Facts* elm) {
     Facts * copy = lst ;
+    if(strcmp(lst->name,"?")==0){
+        lst = elm;
+        return lst;
+    }
     while(copy->next != NULL){
         copy=copy->next;
     }
@@ -449,7 +473,6 @@ Facts* createFactlist() {
             quitter=true;
         }
         factlist=addFact(factlist,createFact(name));
-        //printf("\nentrez q pour quitter");
     }while(!quitter);
     return factlist;
 }
@@ -483,7 +506,13 @@ void menu() {
             case 3 :
                 printf("\nForward Chain \n");
                 Facts * factlistForward  = createFactlist();
-                forwardChain(list,factlistForward);
+                Rules * gift = forwardChain(list,factlistForward);
+                if(gift != NULL) {
+                   printf("%s\n",gift->name);
+                }
+                else{
+                    printf("Aucun résultat\n");
+                }
                 break;
             case 4 :
                 printf("\nBackward Chain \n");
@@ -495,7 +524,7 @@ void menu() {
                     break;
                 }
                 else{
-                    printf("\nnBACKWARD : FALSE");
+                    printf("\nBACKWARD : FALSE");
                 }
                 break;
             case 5:
