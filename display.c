@@ -146,7 +146,7 @@ SDL_Color testColor(int *cpt, int test, SDL_Color non, SDL_Color oui) {
     }
 }
 
-void menu2(SDL_Renderer* renderer, TTF_Font* font, SDL_Color textColor, int newWidth, int newHeight, int hobby, int age, int relation, int budget, int Idee, int scroll){
+void menu2(SDL_Renderer* renderer, TTF_Font* font, SDL_Color textColor, int newWidth, int newHeight, int hobby, int age, int relation, int budget, int idee, int scroll){
 		int c=1;
 		int *cpt= &c;
             SDL_Color color2 = {0, 255, 0, 255};
@@ -179,36 +179,38 @@ void menu2(SDL_Renderer* renderer, TTF_Font* font, SDL_Color textColor, int newW
             		drawTextOnRectangle(renderer, "<20", newWidth/4, newHeight/10*5.5, font, testColor(cpt, budget, textColor, color2));
                         drawTextOnRectangle(renderer, "[20;10]", newWidth/4*2, newHeight/10*5.5, font, testColor(cpt, budget, textColor, color2));
                         drawTextOnRectangle(renderer, ">100", newWidth/4*3, newHeight/10*5.5, font, testColor(cpt, budget, textColor, color2));
-            	
-            (*cpt)=1; 
+            	 
             drawTextOnRectangle(renderer, "Idees cadeau :", newWidth/15, newHeight/10*7, font, textColor);
             		drawTextOnRectangle(renderer, "-", newWidth/15*3.5, newHeight/10*7, font, textColor);
             		drawTextOnRectangle(renderer, "+", newWidth/15*14, newHeight/10*7, font, textColor);
             		if(scroll==0){
-                        drawTextOnRectangle(renderer, "livre", newWidth/15*4, newHeight/10*7, font, textColor);
-                        drawTextOnRectangle(renderer, "kindle", newWidth/15*5, newHeight/10*7, font, textColor);
-                        drawTextOnRectangle(renderer, "poster", newWidth/15*6.5, newHeight/10*7, font, textColor);
-                        drawTextOnRectangle(renderer, "abonnement", newWidth/15*7.8, newHeight/10*7, font, textColor);
-                        drawTextOnRectangle(renderer, "livre nature", newWidth/15*9.8, newHeight/10*7, font, textColor);
-                        drawTextOnRectangle(renderer, "materiel rando", newWidth/15*11.8, newHeight/10*7, font, textColor);
+            		(*cpt)=1;
+                        drawTextOnRectangle(renderer, "livre", newWidth/15*4, newHeight/10*7, font, testColor(cpt, idee, textColor, color2));
+                        drawTextOnRectangle(renderer, "kindle", newWidth/15*5, newHeight/10*7, font, testColor(cpt, idee, textColor, color2));
+                        drawTextOnRectangle(renderer, "poster", newWidth/15*6.5, newHeight/10*7, font, testColor(cpt, idee, textColor, color2));
+                        drawTextOnRectangle(renderer, "abonnement", newWidth/15*7.8, newHeight/10*7, font, testColor(cpt, idee, textColor, color2));
+                        drawTextOnRectangle(renderer, "livre nature", newWidth/15*9.8, newHeight/10*7, font, testColor(cpt, idee, textColor, color2));
+                        drawTextOnRectangle(renderer, "materiel rando", newWidth/15*11.8, newHeight/10*7, font, testColor(cpt, idee, textColor, color2));
                         }
                         if(scroll==1){
-                        drawTextOnRectangle(renderer, "carte cadeau", newWidth/15*4, newHeight/10*7, font, textColor);
-                        drawTextOnRectangle(renderer, "livres recettes", newWidth/15*6.07, newHeight/10*7, font, textColor);
-                        drawTextOnRectangle(renderer, "repas resto", newWidth/15*8.2, newHeight/10*7, font, textColor);
-                        drawTextOnRectangle(renderer, "CD", newWidth/15*10, newHeight/10*7, font, textColor);
-                        drawTextOnRectangle(renderer, "concert", newWidth/15*10.8, newHeight/10*7, font, textColor);
-                        drawTextOnRectangle(renderer, "instrument", newWidth/15*12.1, newHeight/10*7, font, textColor);
+                        (*cpt)=7;
+                        drawTextOnRectangle(renderer, "carte cadeau", newWidth/15*4, newHeight/10*7, font, testColor(cpt, idee, textColor, color2));
+                        drawTextOnRectangle(renderer, "livres recettes", newWidth/15*6.07, newHeight/10*7, font, testColor(cpt, idee, textColor, color2));
+                        drawTextOnRectangle(renderer, "repas resto", newWidth/15*8.2, newHeight/10*7, font, testColor(cpt, idee, textColor, color2));
+                        drawTextOnRectangle(renderer, "CD", newWidth/15*10, newHeight/10*7, font, testColor(cpt, idee, textColor, color2));
+                        drawTextOnRectangle(renderer, "concert", newWidth/15*10.8, newHeight/10*7, font, testColor(cpt, idee, textColor, color2));
+                        drawTextOnRectangle(renderer, "instrument", newWidth/15*12.1, newHeight/10*7, font, testColor(cpt, idee, textColor, color2));
                         }
                         if(scroll==2){
-                        drawTextOnRectangle(renderer, "guide", newWidth/15*4, newHeight/10*7, font, textColor);
-                        drawTextOnRectangle(renderer, "voyage", newWidth/15*5, newHeight/10*7, font, textColor);
-                        drawTextOnRectangle(renderer, "musee", newWidth/15*6.5, newHeight/10*7, font, textColor);
-                        drawTextOnRectangle(renderer, "livre art", newWidth/15*7.8, newHeight/10*7, font, textColor);
-                        drawTextOnRectangle(renderer, "cours", newWidth/15*9.3, newHeight/10*7, font, textColor);
-                        drawTextOnRectangle(renderer, "vin", newWidth/15*10.3, newHeight/10*7, font, textColor);
-                        drawTextOnRectangle(renderer, "degustation", newWidth/15*11, newHeight/10*7, font, textColor);
-                        drawTextOnRectangle(renderer, "visite cave", newWidth/15*13, newHeight/10*7, font, textColor);
+                        (*cpt)=13;
+                        drawTextOnRectangle(renderer, "guide", newWidth/15*4, newHeight/10*7, font, testColor(cpt, idee, textColor, color2));
+                        drawTextOnRectangle(renderer, "voyage", newWidth/15*5, newHeight/10*7, font, testColor(cpt, idee, textColor, color2));
+                        drawTextOnRectangle(renderer, "musee", newWidth/15*6.5, newHeight/10*7, font, testColor(cpt, idee, textColor, color2));
+                        drawTextOnRectangle(renderer, "livre art", newWidth/15*7.8, newHeight/10*7, font, testColor(cpt, idee, textColor, color2));
+                        drawTextOnRectangle(renderer, "cours", newWidth/15*9.3, newHeight/10*7, font, testColor(cpt, idee, textColor, color2));
+                        drawTextOnRectangle(renderer, "vin", newWidth/15*10.3, newHeight/10*7, font, testColor(cpt, idee, textColor, color2));
+                        drawTextOnRectangle(renderer, "degustation", newWidth/15*11, newHeight/10*7, font, testColor(cpt, idee, textColor, color2));
+                        drawTextOnRectangle(renderer, "visite cave", newWidth/15*13, newHeight/10*7, font, testColor(cpt, idee, textColor, color2));
                         }
             	
             drawTextOnRectangle(renderer, "<-- retour", 0, newHeight*0.9, font, textColor);
@@ -413,6 +415,118 @@ int main(int argc, char* args[]) {
                                 budget=3;}
                                 else{budget=0;}
                                 }
+                                }
+                                if (mouseY > newHeight/10*7 && mouseY < newHeight/10*7 + 60){
+                                if(scroll==0){
+                                if(mouseX > newWidth/15*4 && mouseX < newWidth/15*4+70 && (idee==1 || idee ==0)){
+                                if(idee==0){
+                                idee=1;}
+                                else{idee=0;}
+                                }
+                                if(mouseX > newWidth/15*5 && mouseX < newWidth/15*5+100 && (idee==2 || idee ==0)){
+                                if(idee==0){
+                                idee=2;}
+                                else{idee=0;}
+                                }
+                                if(mouseX > newWidth/15*6.5 && mouseX < newWidth/15*6.5+90 && (idee==3 || idee ==0)){
+                                if(idee==0){
+                                idee=3;}
+                                else{idee=0;}
+                                }
+                                if(mouseX > newWidth/15*7.8 && mouseX < newWidth/15*7.8+180 && (idee==4 || idee ==0)){
+                                if(idee==0){
+                                idee=4;}
+                                else{idee=0;}
+                                }
+                                if(mouseX > newWidth/15*9.8 && mouseX < newWidth/15*9.8+180 && (idee==5 || idee ==0)){
+                                if(idee==0){
+                                idee=5;}
+                                else{idee=0;}
+                                }
+                                if(mouseX > newWidth/15*11.8 && mouseX < newWidth/15*11.8+200 && (idee==6 || idee ==0)){
+                                if(idee==0){
+                                idee=6;}
+                                else{idee=0;}
+                                }
+                                
+                                }
+                                if(scroll==1){
+		                        if(mouseX > newWidth/15*4 && mouseX < newWidth/15*4+150 && (idee==7 || idee ==0)){
+		                        if(idee==0){
+		                        idee=7;}
+		                        else{idee=0;}
+		                        }
+		                        if(mouseX > newWidth/15*6.07 && mouseX < newWidth/15*6.07+190 && (idee==8 || idee ==0)){
+		                        if(idee==0){
+		                        idee=8;}
+		                        else{idee=0;}
+		                        }
+		                        if(mouseX > newWidth/15*8.2 && mouseX < newWidth/15*8.2+160 && (idee==9 || idee ==0)){
+		                        if(idee==0){
+		                        idee=9;}
+		                        else{idee=0;}
+		                        }
+		                        if(mouseX > newWidth/15*10 && mouseX < newWidth/15*10+60 && (idee==10 || idee ==0)){
+		                        if(idee==0){
+		                        idee=10;}
+		                        else{idee=0;}
+		                        }
+		                        if(mouseX > newWidth/15*10.8 && mouseX < newWidth/15*10.8+120 && (idee==11 || idee ==0)){
+		                        if(idee==0){
+		                        idee=11;}
+		                        else{idee=0;}
+		                        }
+		                        if(mouseX > newWidth/15*12.1 && mouseX < newWidth/15*12.1+150 && (idee==12 || idee ==0)){
+		                        if(idee==0){
+		                        idee=12;}
+		                        else{idee=0;}
+		                        }
+		                        }
+                                if(scroll==2){
+		                        if(mouseX > newWidth/15*4 && mouseX < newWidth/15*4+100 && (idee==13 || idee ==0)){
+		                        if(idee==0){
+		                        idee=13;}
+		                        else{idee=0;}
+		                        }
+		                        if(mouseX > newWidth/15*5 && mouseX < newWidth/15*5+100 && (idee==14 || idee ==0)){
+		                        if(idee==0){
+		                        idee=14;}
+		                        else{idee=0;}
+		                        }
+		                        if(mouseX > newWidth/15*6.5 && mouseX < newWidth/15*6.5+100 && (idee==15 || idee ==0)){
+		                        if(idee==0){
+		                        idee=15;}
+		                        else{idee=0;}
+		                        }
+		                        if(mouseX > newWidth/15*7.8 && mouseX < newWidth/15*7.8+130 && (idee==16 || idee ==0)){
+		                        if(idee==0){
+		                        idee=16;}
+		                        else{idee=0;}
+		                        }
+		                        if(mouseX > newWidth/15*9.3 && mouseX < newWidth/15*9.3+100 && (idee==17 || idee ==0)){
+		                        if(idee==0){
+		                        idee=17;}
+		                        else{idee=0;}
+		                        }
+		                        if(mouseX > newWidth/15*10.3 && mouseX < newWidth/15*10.3+70 && (idee==18 || idee ==0)){
+		                        if(idee==0){
+		                        idee=18;}
+		                        else{idee=0;}
+		                        }
+		                        if(mouseX > newWidth/15*11 && mouseX < newWidth/15*11+120 && (idee==19 || idee ==0)){
+		                        if(idee==0){
+		                        idee=19;}
+		                        else{idee=0;}
+		                        }
+		                        if(mouseX > newWidth/15*13 && mouseX < newWidth/15*13+120 && (idee==20 || idee ==0)){
+		                        if(idee==0){
+		                        idee=20;}
+		                        else{idee=0;}
+		                        }
+                                }
+                                
+                               
+                                
                                 }
                         }
                         else if (menu ==3) {
