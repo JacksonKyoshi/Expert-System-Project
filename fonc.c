@@ -103,12 +103,13 @@ int backwardChain(char *but, Rules *baseRules, Facts *baseFacts) {
     removeSpaces(but);
     if (!findFact(baseFacts, but)) {
         Rules *rule = baseRules;
-        removeSpaces(rule->name);
+        
         while (rule != NULL && !result) {
+            removeSpaces(rule->name);
             if (strcmp(rule->name, but) == 0) {
                 Facts *hypothesis = rule->factList;
-                int continueFlag = 1;
-                while (hypothesis != NULL && continueFlag) {
+                int continueFlag = 0;
+                while (hypothesis != NULL && !continueFlag) {
                     continueFlag = backwardChain(hypothesis->name, baseRules, baseFacts);
                     hypothesis = hypothesis->next;
                 }
@@ -126,25 +127,6 @@ int backwardChain(char *but, Rules *baseRules, Facts *baseFacts) {
 /// @param base_de_regles char * containing all rules
 /// @param base_de_faits char * containing all facts that are true (choosed by user)
 /// @return trueList Rules * containing the correct rule 
-/*
-Rules* forwardChain(Rules* base_de_regles, Facts* base_de_faits) {
-  Rules* tmp = base_de_regles;
-  Rules* trueList = malloc(sizeof(Rules));
-  while (tmp != NULL) {
-    if (verifRegles(base_de_faits, tmp) == 1) {
-      Rules* copy = initRules();
-      strcpy(copy->name,tmp->name);
-      copy->factList=tmp->factList;
-      copy->next=NULL;
-      trueList=addRules(trueList,copy);
-      printf("%s\n",trueList->name);
-      }
-
-    tmp = tmp->next;
-  }
-  return trueList;
-}
-*/
 Rules* forwardChain(Rules* base_de_regles, Facts* base_de_faits) {
   Rules* tmp = base_de_regles;
   Rules* trueList = NULL;
@@ -495,7 +477,7 @@ void menu() {
     int choix;
     bool quitter = false;
     char* Fact= malloc(200*sizeof(char));
-    char * test = readRulesFile("test2.kbs");
+    char * test = readRulesFile("rules.kbs");
     Rules * list = charToRules(test);
     char * backward=malloc(20*sizeof(char));
     do {
