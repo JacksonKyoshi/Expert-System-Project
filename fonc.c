@@ -167,23 +167,6 @@ int verifRegles(Facts* factList, Rules* regle) {
   return resultat;
 }
 
-/// @brief 
-/// @param factBase 
-/// @param fact 
-/// @return 
-bool isInFactBase(Facts* factBase, Facts* fact) {
-    if (factBase == NULL || fact == NULL) {
-        return false;
-    }
-    while (factBase != NULL) {
-        if (strcmp(factBase->name, fact->name) == 0) {
-            return true;
-        }
-        factBase = factBase->next;
-    }
-    return false;
-}
-
 /// @brief test if a fact is in a fact list
 /// @param base the factlist
 /// @param name the name of the fact that must be tested
@@ -474,6 +457,7 @@ Facts* createFactlist() {
 
 /// @brief menu in terminal
 void menu() {
+    system("clear");
     int choix;
     bool quitter = false;
     char* Fact= malloc(200*sizeof(char));
