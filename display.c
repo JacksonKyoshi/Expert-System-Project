@@ -3,6 +3,168 @@
 #include <stdio.h>
 #include "func.h" 
 
+char* getBudget(int id){
+char* budget = malloc(sizeof(char)*3);
+switch (id) {
+        case 1:
+            strcpy(budget, "a");
+            break;
+        case 2:
+            strcpy(budget, "b");
+            break;
+        case 3:
+            strcpy(budget, "c");
+            break;
+        default:
+            strcpy(budget, "D");
+            break;   
+        }
+        return budget;
+        }
+char* getHobby(int id){
+char* hobby = malloc(sizeof(char)*50);
+switch (id) {
+        case 1:
+            strcpy(hobby, "livre");
+            break;
+        case 2:
+            strcpy(hobby, "kindle");
+            break;
+        case 3:
+            strcpy(hobby, "lecture");
+            break;
+        case 4:
+            strcpy(hobby, "cinema");
+            break;
+        case 5:
+            strcpy(hobby, "plein_air");
+            break;
+        case 6:
+            strcpy(hobby, "technologie");
+            break;
+        case 7:
+            strcpy(hobby, "cuisine");
+            break;
+        case 8:
+            strcpy(hobby, "musique");
+            break;
+        case 9:
+            strcpy(hobby, "voyage");
+            break;
+        case 10:
+            strcpy(hobby, "art");
+            break;
+        case 11:
+            strcpy(hobby, "vin");
+            break;
+        default:
+            strcpy(hobby, "cadeau_inconnu");
+            break;
+    }
+
+    return hobby;
+}
+char* getRelation(int id) {
+    char* relation = malloc(sizeof(char) * 20);
+
+    if (relation == NULL) {
+        // Gestion de l'échec d'allocation de mémoire
+        return NULL;
+    }
+
+    switch (id) {
+        case 1:
+            strcpy(relation, "enfant");
+            break;
+        case 2:
+            strcpy(relation, "famille");
+            break;
+        case 3:
+            strcpy(relation, "epoux");
+            break;
+        case 4:
+            strcpy(relation, "ami");
+            break;
+        default:
+            strcpy(relation, "relation_inconnue");
+            break;
+    }
+
+    return relation;
+}
+
+char* getCadeau(int id){
+char * cadeau = malloc(sizeof(char)*50);
+    switch (id) {
+        case 1:
+            strcpy(cadeau, "livre");
+            break;
+        case 2:
+            strcpy(cadeau, "kindle");
+            break;
+        case 3:
+            strcpy(cadeau, "poster");
+            break;
+        case 4:
+            strcpy(cadeau, "Abonnement_streaming");
+            break;
+        case 5:
+            strcpy(cadeau, "livre_nature");
+            break;
+        case 6:
+            strcpy(cadeau, "materiel_rando/camping");
+            break;
+	case 7:
+            strcpy(cadeau, "carte_cadeau");
+            break;
+	case 8:
+            strcpy(cadeau, "livre_recettes");
+            break;
+        case 9:
+            strcpy(cadeau, "resto");
+            break;
+        case 10:
+            strcpy(cadeau, "CD");
+            break;
+        case 11:
+            strcpy(cadeau, "concert");
+            break;
+        case 12:
+            strcpy(cadeau, "instrument");
+            break;
+        case 13:
+            strcpy(cadeau, "guide_voyage");
+            break;
+        case 14:
+            strcpy(cadeau, "voyage");
+            break;
+        case 15:
+            strcpy(cadeau, "billet_musee");
+            break;
+        case 16:
+            strcpy(cadeau, "livre_art");
+            break;
+	case 17:
+            strcpy(cadeau, "lecon");
+            break;
+        case 18:
+            strcpy(cadeau, "bouteille");
+            break;
+        case 19:
+            strcpy(cadeau, "degustation");
+            break;
+        case 20:
+            strcpy(cadeau, "visite_cave");
+            break;
+        default:
+            strcpy(cadeau, "n'existe pas");
+            break;
+    }
+
+    return cadeau;
+}
+
+
 // Function to initialize SDL
 int initSDL(SDL_Window** window, SDL_Renderer** renderer) {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -93,15 +255,22 @@ void drawTextOnRectangle(SDL_Renderer* renderer, const char* text, int x, int y,
     // Clean up
     SDL_DestroyTexture(textTexture);
 }
-void showRulesSDL(SDL_Renderer* renderer,Rules* lst, TTF_Font* font, SDL_Color color) {
-    int x=80;
-    int base=80;
-    int cpt=0;
-    int y=40;
+void showRulesSDL(SDL_Renderer* renderer,Rules* lst, TTF_Font* font, SDL_Color color, int width, int height, int cpt) {
+    drawTextOnRectangle(renderer, "precedent", width/2-500, height/2, font, color);
+    drawTextOnRectangle(renderer, "suivant", width/2+400, height/2, font, color);
+
+    int x=width/2-200;
+    int base=width/2-200;
+    int i=0;
+    int y=height/10*2;
     Rules * copy = lst;
     char * temp = malloc(sizeof(char)*100);
     strcpy(temp,"");
-    while(copy != NULL) {
+    while(copy != NULL && i<cpt*10){
+    copy=copy->next;
+    i++;}
+    i=0;
+    while(copy != NULL && i<10) {
     strcat(temp, "|");
     strcat(temp, copy->name);
     strcat(temp, "| -->");
@@ -117,14 +286,11 @@ void showRulesSDL(SDL_Renderer* renderer,Rules* lst, TTF_Font* font, SDL_Color c
             //printf("[%s]", factPtr->name);
             drawTextOnRectangle(renderer, temp, x, y, font, color);
             factPtr = factPtr->next;
-            x+=40;
+            x+=100;
             strcpy(temp,"");
         }
-        cpt++;
+        i++;
         x=base;
-        if(cpt==10){
-        cpt=0;
-        base+=400;}
         y+=40;
         copy = copy->next;
     }
@@ -150,6 +316,7 @@ void menu2(SDL_Renderer* renderer, TTF_Font* font, SDL_Color textColor, int newW
 		int c=1;
 		int *cpt= &c;
             SDL_Color color2 = {0, 255, 0, 255};
+            drawTextOnRectangle(renderer, "Est ce que j'ai pris le bon cadeau", newWidth/2-200, newHeight/10*9, font, textColor);
             drawTextOnRectangle(renderer, "Hobbies :", newWidth/15, newHeight/10, font, textColor);
                         drawTextOnRectangle(renderer, "Lecture", newWidth/15*2.7, newHeight/10, font, testColor(cpt, hobby, textColor, color2));
                         drawTextOnRectangle(renderer, "Cinema", newWidth/15*4, newHeight/10, font, testColor(cpt, hobby, textColor, color2));
@@ -220,6 +387,7 @@ void menu3(SDL_Renderer* renderer, TTF_Font* font, SDL_Color textColor, int newW
 		int c=1;
 		int *cpt= &c;
             SDL_Color color2 = {0, 255, 0, 255};
+            drawTextOnRectangle(renderer, "Trouver le bon cadeau", newWidth/2-200, newHeight/10*9, font, textColor);
             drawTextOnRectangle(renderer, "Hobbies :", newWidth/15, newHeight/10, font, textColor);
                         drawTextOnRectangle(renderer, "Lecture", newWidth/15*2.7, newHeight/10, font, testColor(cpt, hobby, textColor, color2));
                         drawTextOnRectangle(renderer, "Cinema", newWidth/15*4, newHeight/10, font, testColor(cpt, hobby, textColor, color2));
@@ -256,7 +424,9 @@ void menu3(SDL_Renderer* renderer, TTF_Font* font, SDL_Color textColor, int newW
 }
 
 int main(int argc, char* args[]) {
-    char * test = readRulesFile("rules.kbs");
+    char * test = readRulesFile("test2.kbs");
+    char* age2= malloc(sizeof(char)*3);
+    int count=0;
     int scroll=0;
     int hobby=0;
     int age=0;
@@ -289,6 +459,8 @@ int main(int argc, char* args[]) {
     int quit = 0;
 
     while (!quit) {
+        Facts* factlist=initFacts();
+        Facts* tempFact=initFacts();
         // Clear screen
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
@@ -300,7 +472,7 @@ int main(int argc, char* args[]) {
             drawTextOnRectangle(renderer, "Trouve cadeau", newWidth/10*4, newHeight/10*6, font, textColor);
             drawTextOnRectangle(renderer, "quitter", newWidth/10*4, newHeight/10*8, font, textColor);
         } else if (menu == 1) {
-            showRulesSDL(renderer, list, font, textColor); 
+            showRulesSDL(renderer, list, font, textColor,newWidth, newHeight, count); 
             drawTextOnRectangle(renderer, "<-- retour", 0, newHeight*0.9, font, color);
         } else if (menu == 2) {
         menu2(renderer, font, textColor, newWidth, newHeight, hobby, age, relation, budget, idee, scroll);
@@ -309,10 +481,25 @@ int main(int argc, char* args[]) {
             drawTextOnRectangle(renderer, "<-- retour", 0, newHeight*0.9, font, color);
             menu3(renderer, font, textColor, newWidth, newHeight, hobby, age, relation, budget);
         }
-        
+        else if(menu ==4){
+        	tempFact=createFact(getHobby(hobby));
+        	factlist=addFact(factlist,tempFact);
+        	sprintf(age2,"%d",age);
+        	tempFact=createFact(age2);
+        	factlist=addFact(factlist,tempFact);
+        	tempFact=createFact(getRelation(relation));
+        	factlist=addFact(factlist,tempFact);
+        	tempFact=createFact(getBudget(budget));
+        	factlist=addFact(factlist,tempFact);
+        	
+        	
+        	drawTextOnRectangle(renderer, "<-- retour", 0, newHeight*0.9, font, color);
+                showRulesSDL(renderer, forwardChain(list,factlist), font, textColor, newWidth, newHeight, 0);
+         }
 
         // Update screen
         SDL_RenderPresent(renderer);
+        free(factlist);
 
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
@@ -335,9 +522,22 @@ int main(int argc, char* args[]) {
                                 menu = 3;
                             }
                         } 
+                        else if (menu ==4) {
+                            if (mouseX > 0 && mouseX < 140 && mouseY > newHeight*0.9 && mouseY < newHeight*0.9 + 50) {
+                                menu = 0;
+                            }
+                            }
                         else if (menu ==1) {
                             if (mouseX > 0 && mouseX < 140 && mouseY > newHeight*0.9 && mouseY < newHeight*0.9 + 50) {
                                 menu = 0;
+                            }
+                            if (mouseX > newWidth/2-500 && mouseX < newWidth/2-350 && mouseY > newHeight/2 && mouseY < newHeight/2 + 50) {
+                            if(count>0){
+                                count--;
+                            }
+                            }
+                            if (mouseX > newWidth/2+400 && mouseX < newWidth/2+520 && mouseY > newHeight/2 && mouseY < newHeight/2 + 50) {
+                                count++;
                             }
                         }
                         else if (menu ==2) {
@@ -567,6 +767,9 @@ int main(int argc, char* args[]) {
                                
                                 
                                 }
+                                if(mouseX > newWidth/2-200 && mouseX < newWidth/2 + 200 && mouseY > newHeight/9 && mouseY < newHeight/9+50){
+                                
+                                }
                         }
                         else if (menu ==3) {
                             if (mouseX > 0 && mouseX < 140 && mouseY > newHeight*0.9 && mouseY < newHeight*0.9 + 50) {
@@ -639,7 +842,7 @@ int main(int argc, char* args[]) {
                             if (mouseY > newHeight/10*4 && mouseY < newHeight/10*4 + 60){
                                 if(mouseX > newWidth/4 && mouseX < newWidth/4+100 && (relation==1 || relation ==0)){
                                 if(relation==0){
-                                relation=1;}
+                                relation=1;} 
                                 else{relation=0;}
                                 }
                                 if(mouseX > newWidth/4*2 && mouseX < newWidth/4*2+110 && (relation==2 || relation ==0)){
@@ -675,7 +878,9 @@ int main(int argc, char* args[]) {
                                 else{budget=0;}
                                 }
                         }
-                            
+                          if(mouseX > newWidth/2 - 200 && mouseX < newWidth/2 + 200 && mouseY > newHeight/10*9 && mouseY > newHeight/10*9){ 
+                          menu=4;
+                          }
                         }
                     }
                     break;
@@ -693,6 +898,7 @@ int main(int argc, char* args[]) {
     }
 
     // Clean up
+    
     TTF_CloseFont(font);
     closeSDL(window, renderer);
 
