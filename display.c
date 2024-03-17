@@ -496,6 +496,28 @@ int main(int argc, char* args[]) {
         	drawTextOnRectangle(renderer, "<-- retour", 0, newHeight*0.9, font, color);
                 showRulesSDL(renderer, forwardChain(list,factlist), font, textColor, newWidth, newHeight, 0);
          }
+         else if(menu ==5){
+         	tempFact=createFact(getHobby(hobby));
+        	factlist=addFact(factlist,tempFact);
+        	sprintf(age2,"%d",age);
+        	tempFact=createFact(age2);
+        	factlist=addFact(factlist,tempFact);
+        	tempFact=createFact(getRelation(relation));
+        	factlist=addFact(factlist,tempFact);
+        	tempFact=createFact(getBudget(budget));
+        	factlist=addFact(factlist,tempFact);
+        	int a = backwardChain(getCadeau(idee), list, tempFact);
+        	if(a){
+        	drawTextOnRectangle(renderer, "OUI SUPER IDEE", newWidth/2 -100, newHeight/2, font, color);}
+        	else if(!a){
+        	drawTextOnRectangle(renderer, "Non c'est pas le bon cadeau", newWidth/2 -300, newHeight/2, font, color);}
+        	else{
+        	drawTextOnRectangle(renderer, "WTF", newWidth/2 -100, newHeight/2, font, color);}
+        	
+         drawTextOnRectangle(renderer, "<-- retour", 0, newHeight*0.9, font, color);
+         
+         
+         }
 
         // Update screen
         SDL_RenderPresent(renderer);
@@ -522,7 +544,7 @@ int main(int argc, char* args[]) {
                                 menu = 3;
                             }
                         } 
-                        else if (menu ==4) {
+                        else if (menu == 4 || menu ==5) {
                             if (mouseX > 0 && mouseX < 140 && mouseY > newHeight*0.9 && mouseY < newHeight*0.9 + 50) {
                                 menu = 0;
                             }
@@ -762,12 +784,14 @@ int main(int argc, char* args[]) {
 		                        idee=20;}
 		                        else{idee=0;}
 		                        }
-                                }
+                                
                                 
                                
-                                
                                 }
-                                if(mouseX > newWidth/2-200 && mouseX < newWidth/2 + 200 && mouseY > newHeight/9 && mouseY < newHeight/9+50){
+                                }
+                                
+                                if(mouseX > newWidth/2 - 200 && mouseX < newWidth/2 + 200 && mouseY > newHeight/10*9 && mouseY > newHeight/10*9){
+                                menu = 5;
                                 
                                 }
                         }
