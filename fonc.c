@@ -97,56 +97,35 @@ void removeSpaces(char *str) {
 /// @param baseRules Rules * containing all rules
 /// @param baseFacts Facts * containing all facts that are true (choosed by user)
 /// @return result int 1 if true, 0 if false
-
 int backwardChain(char *but, Rules *baseRules, Facts *baseFacts) {
+    int result = 0;
     removeSpaces(but);
-    if (findFact(baseFacts, but)) {
-        return 1;
-    }
-    //
-    Rules *rule = baseRules;
-    while (rule != NULL) {
-        removeSpaces(rule->name);
-        if (strcmp(rule->name, but) == 0) {
-            Facts *hypothesis = rule->factList;
-            int continueFlag = 1;
-            while (hypothesis != NULL && continueFlag) {
-                if (continueFlag) {
-                return 1;
+    if (!findFact(baseFacts, but)) {
+        Rules *rule = baseRules;
+        while (rule != NULL && !result) {
+            removeSpaces(rule->name);
+            if (strcmp(rule->name, but) == 0) {
+                Facts *hypothesis = rule->factList;
+                int continueFlag = 0;
+                while (hypothesis != NULL && !continueFlag) {
+                    continueFlag = backwardChain(hypothesis->name, baseRules, baseFacts);
+                    hypothesis = hypothesis->next;
                 }
-                hypothesis = hypothesis->next;
+                result = continueFlag;
             }
-            
+            rule = rule->next;
         }
-        rule = rule->next;
+    } else {
+        result = 1;
     }
-    // Aucune règle trouvée pour prouver le but
-    return 0;
+    return result;
 }
 
 /// @brief forward chaining function
 /// @param base_de_regles char * containing all rules
 /// @param base_de_faits char * containing all facts that are true (choosed by user)
 /// @return trueList Rules * containing the correct rule 
-/*
-Rules* forwardChain(Rules* base_de_regles, Facts* base_de_faits) {
-  Rules* tmp = base_de_regles;
-  Rules* trueList = malloc(sizeof(Rules));
-  while (tmp != NULL) {
-    if (verifRegles(base_de_faits, tmp) == 1) {
-      Rules* copy = initRules();
-      strcpy(copy->name,tmp->name);
-      copy->factList=tmp->factList;
-      copy->next=NULL;
-      trueList=addRules(trueList,copy);
-      printf("%s\n",trueList->name);
-      }
 
-    tmp = tmp->next;
-  }
-  return trueList;
-}
-*/
 Rules* forwardChain(Rules* base_de_regles, Facts* base_de_faits) {
   Rules* tmp = base_de_regles;
   Rules* trueList = NULL;
@@ -158,7 +137,6 @@ Rules* forwardChain(Rules* base_de_regles, Facts* base_de_faits) {
       copy->next=NULL;
       trueList=addRules(trueList,copy);
       }
-
     tmp = tmp->next;
   }
   return trueList;
@@ -212,11 +190,12 @@ int verifRegles(Facts* factList, Rules* regle) {
 /// @param name the name of the fact that must be tested
 /// @return null or the factlist if it's true
 int findFact(Facts *list, char *name) {
-    while (list != NULL) {
+    Facts * temp = list;
+    while (temp != NULL) {
         if (strcmp(list->name, name) == 0) {
             return 1; 
         }
-        list = list->next;
+        temp = temp->next;
     }
     return 0;
 }
@@ -497,7 +476,7 @@ void menu() {
     int choix;
     bool quitter = false;
     char* Fact= malloc(200*sizeof(char));
-    char * test = readRulesFile("test2.kbs");
+    char * test = readRulesFile("rules.kbs");
     Rules * list = charToRules(test);
     char * backward=malloc(20*sizeof(char));
     do {
