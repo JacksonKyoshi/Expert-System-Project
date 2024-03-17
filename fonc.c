@@ -77,31 +77,50 @@ void saveRulesFile(char * name, char * data){
     }while(character != '?');
 }
 
+/// @brief remove all the Spaces of a char list (char*)
+/// @param str the char list
+void removeSpaces(char *str) {
+    char *dest = str; 
+    while (*str) {
+        if (*str != ' ') {
+            *dest++ = *str;
+        }
+        str++; 
+    }
+    *dest = '\0';
+}
+
+
 /// @brief backward chaining function
 /// @param but char * of the rule that must be tested
 /// @param baseRules Rules * containing all rules
 /// @param baseFacts Facts * containing all facts that are true (choosed by user)
 /// @return result int 1 if true, 0 if false
+
 int backwardChain(char *but, Rules *baseRules, Facts *baseFacts) {
-    int result = 0;
-    if (!findFact(baseFacts, but)) {
-        Rules *rule = baseRules;
-        while (rule != NULL && !result) {
-            if (strcmp(rule->name, but) == 0) {
-                Facts *hypothesis = rule->factList;
-                int continueFlag = 1;
-                while (hypothesis != NULL && continueFlag) {
-                    continueFlag = backwardChain(hypothesis->name, baseRules, baseFacts);
-                    hypothesis = hypothesis->next;
-                }
-                result = continueFlag;
-            }
-            rule = rule->next;
-        }
-    } else {
-        result = 1;
+    removeSpaces(but);
+    if (findFact(baseFacts, but)) {
+        return 1;
     }
-    return result;
+    //
+    Rules *rule = baseRules;
+    while (rule != NULL) {
+        removeSpaces(rule->name);
+        if (strcmp(rule->name, but) == 0) {
+            Facts *hypothesis = rule->factList;
+            int continueFlag = 1;
+            while (hypothesis != NULL && continueFlag) {
+                if (continueFlag) {
+                return 1;
+                }
+                hypothesis = hypothesis->next;
+            }
+            
+        }
+        rule = rule->next;
+    }
+    // Aucune règle trouvée pour prouver le but
+    return 0;
 }
 
 /// @brief forward chaining function
@@ -188,17 +207,17 @@ int verifRegles(Facts* factList, Rules* regle) {
 }
 
 /// @brief test if a fact is in a fact list
-/// @param base the factlist
+/// @param list the factlist
 /// @param name the name of the fact that must be tested
 /// @return null or the factlist if it's true
-Facts *findFact(Facts *base, char *name) {
-    while (base != NULL) {
-        if (strcmp(base->name, name) == 0) {
-            return base;
+int findFact(Facts *list, char *name) {
+    while (list != NULL) {
+        if (strcmp(list->name, name) == 0) {
+            return 1; 
         }
-        base = base->next;
+        list = list->next;
     }
-    return NULL;
+    return 0;
 }
 
 /// @brief add a fact in a fact list
@@ -258,10 +277,15 @@ void showRules(Rules* lst) {
 /// @brief create a fact
 /// @param name of the fact
 /// @return the fact
-Facts* createFact(char * name) {
-    Facts* fact=initFacts();
-    strcpy(fact->name,name);
-    return fact;
+Facts *createFact(char *name) {
+    Facts *newFact = (Facts *)malloc(sizeof(Facts));
+    if (newFact == NULL) {
+        perror("Memory allocation failed");
+        exit(EXIT_FAILURE);
+    }
+    newFact->name = strdup(name);
+    newFact->next = NULL;
+    return newFact;
 }
 
 /// @brief create a rule
@@ -439,8 +463,6 @@ void tests(){
       showRules(trueList);
 
     printf("Test forwardChain: Passed\n");
-
-
     printf("backward test :\n");
     if(backwardChain("Fact3",base_de_regles,base_de_faits)==1) {
         printf("backward test 1 passed\n");
@@ -448,16 +470,6 @@ void tests(){
      if(backwardChain("Cr",base_de_regles,base_de_faits)==0) {
         printf("backward test 2 passed\n");
     }
-
-
-    free(base_de_faits);
-    free(trueList);
-    free(base_de_regles);
-    free(fact1);
-    free(fact2);
-    free(fact3);
-    free(fact4);
-
 }
 
 /// @brief create a fact list
