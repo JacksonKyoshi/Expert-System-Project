@@ -4,34 +4,34 @@
 #include "func.h"
 #include <stdbool.h>
 
-//first commit
-
+//intialise a fact
 Facts* initFacts() {
     Facts* lst = malloc(sizeof(Facts));
-    lst->name =malloc(20*sizeof(char));
+    lst->name =malloc(50*sizeof(char));
     lst ->next= NULL;
     return lst;
 }
-
+//initialise a rule
 Rules* initRules() {
     Rules* lst=malloc(sizeof(Rules));
-    lst->name=malloc(20*sizeof(char));
+    lst->name=malloc(50*sizeof(char));
     lst -> next=NULL;
    lst->factList = initFacts();
     return lst; 
 }
 
+//read the rule file to return a char *
 char * readRulesFile(char * name){
     FILE * file = fopen(name,"r");
-    char * result = malloc(sizeof(char)*1000);
+    char * result = malloc(sizeof(char)*10000);
     char character;
 
-    if (file == NULL) {
+    if (file == NULL) {//condition to manage errors when opening the file rule
         perror("Error opening file");
         exit(EXIT_FAILURE);
     }
 
-    do{
+    do{//loop on each character to save the into the char * result
          if(character != '\n'){
             sprintf(result + strlen(result), "%c", character);
         }
@@ -41,6 +41,7 @@ char * readRulesFile(char * name){
     return result;
 }
 
+//function to save a rule file from char *
 void saveRulesFile(char * name, char * data){
     FILE * file = fopen(name, "w");
     int cpt = 0;
@@ -195,7 +196,6 @@ Rules * addRules(Rules* lst,Rules* elm) {
         lst->next=NULL;
     }
      return lst;
-    
 }
 
 void showRules(Rules* lst) {
@@ -242,70 +242,85 @@ void showFacts(Facts* factlist){
     }
 }
 
-//str sera une seule ligne donc de la première lettre à un point virgule.
+
 Facts* writeFacts(char* str) {
-    char* name=malloc(20*sizeof(char));
-    strcpy(name, "\0");
-    Facts* factlist=initFacts();
-    for(int i=0;i<strlen(str);i++){
-        if(str[i]==59) {
-            //showFacts(factlist);
-            return factlist;
-        }
-        else{
-            if(str[i] != 32) {
-                name=strncat(name,&str[i],1);
+    char name[20]; 
+    Facts* factlist = initFacts();
+    int nameIndex = 0; 
+
+    for (int i = 0; i < strlen(str); i++) {
+        if (str[i] == ';') {
+            if (nameIndex > 0) {
+                name[nameIndex] = '\0'; 
+                Facts* newFact = createFact(name);
+                factlist = addFact(factlist, newFact);
+                nameIndex = 0;
             }
-            else{
-                if(strlen(factlist->name)==0){
-                    strcpy(factlist->name,name);
-                }
-                else{
-                   Facts* newFact= createFact(name);
-                   factlist= addFact(factlist,newFact);
-                }
-                 strcpy(name,"");   
-            }        
+            return factlist;
+        } else if (str[i] != ' ') {
+            name[nameIndex++] = str[i];
+        } else {
+            if (nameIndex > 0) {
+                name[nameIndex] = '\0'; 
+                Facts* newFact = createFact(name);
+                factlist = addFact(factlist, newFact);
+                nameIndex = 0;
+            }
         }
     }
-    return NULL;
+    return factlist;
 }
 
 Rules* writeRules(char* data) {
-    char* token=malloc(100*sizeof(char));
-    char* content = malloc(100*sizeof(char));
-    strcpy(content,data);
-    token = strtok(content, "->");
-    if(token != NULL){
-        //printf("token : %s\n",token);
-        //ici on va gérer les facts
-        char* lst= malloc(sizeof(token)+2);
-        strcpy(lst,token);
-        strncat(lst,";",1);
+    char token[50];
+    char content[50];
+    strcpy(content, data);
+    strcpy(token, strtok(content, "->"));
+    if (token != NULL) {
+        char* lst = malloc(strlen(token) + 2);
+        if (lst == NULL) {
+            perror("Allocation error");
+            exit(EXIT_FAILURE);
+        }
+        strcpy(lst, token);
+        strncat(lst, ";", 1);
         Facts* fact = writeFacts(lst);
-        token = strtok(NULL, "->");
-        if(token != NULL) {
-            Rules* rule= malloc(sizeof(Rules));
-            rule=createRule(fact,token);
-           return rule;
+        free(lst); 
+        strcpy(token, strtok(NULL, "->"));
+        if (token != NULL) {
+            Rules* rule = malloc(sizeof(Rules)); 
+            if (rule == NULL) {
+                perror("Allocation error");
+                exit(EXIT_FAILURE);
+            }
+            rule = createRule(fact, token);
+            return rule;
         }
     }
     return NULL;
 }
 
 Rules * charToRules(char * data){
-    Rules* lst=NULL;
-    char* name=malloc(20*sizeof(char));
-    strcpy(name, "\0");
-    for(int i=0;i<=strlen(data);i++){
-        if(data[i]==59){
-           lst=addRules(lst,writeRules(name));
-           strcpy(name,"\0");  
+    Rules* lst = NULL;
+    char* name = malloc(strlen(data) + 1); 
+    if (name == NULL) {
+        perror("Allocation error");
+        exit(EXIT_FAILURE);
+    }
+    strcpy(name, "");
+    int cpt = 0;
+    for(long i = 0; i <= strlen(data); i++){
+        if(data[i] == 59){
+            printf("%d\n", cpt);
+            lst = addRules(lst, writeRules(name));
+            strcpy(name, "");  
+            cpt += 1;
         }
         else{
-            strncat(name,&data[i],1);
+            strncat(name, &data[i], 1);
         }
     }
+    free(name);
     return lst;
 }
 
@@ -404,8 +419,8 @@ Facts* createFactlist() {
 void menu() {
     int choix;
     bool quitter = false;
-    char* Fact= malloc(20*sizeof(char));
-    char * test = readRulesFile("rules.kbs");
+    char* Fact= malloc(200*sizeof(char));
+    char * test = readRulesFile("test2.kbs");
     Rules * list = charToRules(test);
     char * backward=malloc(20*sizeof(char));
     do {
