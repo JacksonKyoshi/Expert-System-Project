@@ -25,36 +25,30 @@ char* getHobby(int id){
 char* hobby = malloc(sizeof(char)*50);
 switch (id) {
         case 1:
-            strcpy(hobby, "livre");
-            break;
-        case 2:
-            strcpy(hobby, "kindle");
-            break;
-        case 3:
             strcpy(hobby, "lecture");
             break;
-        case 4:
+        case 2:
             strcpy(hobby, "cinema");
             break;
-        case 5:
+        case 3:
             strcpy(hobby, "plein_air");
             break;
-        case 6:
+        case 4:
             strcpy(hobby, "technologie");
             break;
-        case 7:
+        case 5:
             strcpy(hobby, "cuisine");
             break;
-        case 8:
+        case 6:
             strcpy(hobby, "musique");
             break;
-        case 9:
+        case 7:
             strcpy(hobby, "voyage");
             break;
-        case 10:
+        case 8:
             strcpy(hobby, "art");
             break;
-        case 11:
+        case 9:
             strcpy(hobby, "vin");
             break;
         default:
@@ -491,6 +485,7 @@ int main(int argc, char* args[]) {
         	factlist=addFact(factlist,tempFact);
         	tempFact=createFact(getBudget(budget));
         	factlist=addFact(factlist,tempFact);
+        	printf("%s - %s - %s -%s", getHobby(hobby), age2, getRelation(relation), getBudget(budget));
         	
         	
         	drawTextOnRectangle(renderer, "<-- retour", 0, newHeight*0.9, font, color);
