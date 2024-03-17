@@ -540,6 +540,11 @@ int main(int argc, char* args[]) {
                             if (mouseX > newWidth/10*4 && mouseX < newWidth/10*4 +200 && mouseY > newHeight/10*6 && mouseY < newHeight/10*6 + 50) {
                                 menu = 3;
                             }
+                            if (mouseX > newWidth/10*4 && mouseX < newWidth/10*4 +120 && mouseY > newHeight/10*8 && mouseY < newHeight/10*8 + 50) {
+                                quit = 1;
+                            }
+                            
+                          
                         } 
                         else if (menu == 4 || menu ==5) {
                             if (mouseX > 0 && mouseX < 140 && mouseY > newHeight*0.9 && mouseY < newHeight*0.9 + 50) {
