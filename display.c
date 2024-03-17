@@ -249,6 +249,13 @@ void drawTextOnRectangle(SDL_Renderer* renderer, const char* text, int x, int y,
     // Clean up
     SDL_DestroyTexture(textTexture);
 }
+void showCadeau(SDL_Renderer* render, Rules* lst, TTF_Font* font, SDL_Color color, int width, int height){
+Rules * copy = lst;
+if( copy != NULL){
+printf("%s \n", copy->name);
+drawTextOnRectangle(render, copy->name, width/2-100, height/2, font, color);
+}
+}
 void showRulesSDL(SDL_Renderer* renderer,Rules* lst, TTF_Font* font, SDL_Color color, int width, int height, int cpt) {
     drawTextOnRectangle(renderer, "precedent", width/2-500, height/2, font, color);
     drawTextOnRectangle(renderer, "suivant", width/2+400, height/2, font, color);
@@ -418,7 +425,7 @@ void menu3(SDL_Renderer* renderer, TTF_Font* font, SDL_Color textColor, int newW
 }
 
 int main(int argc, char* args[]) {
-    char * test = readRulesFile("test2.kbs");
+    char * test = readRulesFile("rules.kbs");
     char* age2= malloc(sizeof(char)*3);
     int count=0;
     int scroll=0;
@@ -485,11 +492,11 @@ int main(int argc, char* args[]) {
         	factlist=addFact(factlist,tempFact);
         	tempFact=createFact(getBudget(budget));
         	factlist=addFact(factlist,tempFact);
-        	printf("%s - %s - %s -%s", getHobby(hobby), age2, getRelation(relation), getBudget(budget));
         	
         	
         	drawTextOnRectangle(renderer, "<-- retour", 0, newHeight*0.9, font, color);
-                showRulesSDL(renderer, forwardChain(list,factlist), font, textColor, newWidth, newHeight, 0);
+        	showCadeau(renderer, forwardChain(list,factlist), font, textColor, newWidth, newHeight);
+                //showRulesSDL(renderer, forwardChain(list,factlist), font, textColor, newWidth, newHeight, 0);
          }
          else if(menu ==5){
          	tempFact=createFact(getHobby(hobby));
