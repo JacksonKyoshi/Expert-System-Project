@@ -252,7 +252,6 @@ void drawTextOnRectangle(SDL_Renderer* renderer, const char* text, int x, int y,
 void showCadeau(SDL_Renderer* render, Rules* lst, TTF_Font* font, SDL_Color color, int width, int height){
 Rules * copy = lst;
 if( copy != NULL){
-printf("%s \n", copy->name);
 drawTextOnRectangle(render, copy->name, width/2-100, height/2, font, color);
 }
 }
@@ -276,15 +275,11 @@ void showRulesSDL(SDL_Renderer* renderer,Rules* lst, TTF_Font* font, SDL_Color c
     strcat(temp, copy->name);
     strcat(temp, "| -->");
         drawTextOnRectangle(renderer, temp, x, y, font, color);
-        //printf("| %s | -->", copy->name);
         Facts* factPtr = copy->factList;
         x+=100; 
         strcpy(temp,"");
         while(factPtr != NULL) {
-            //strcat(temp, "[");
             strcat(temp, factPtr->name);
-            //strcat(temp, "]");
-            //printf("[%s]", factPtr->name);
             drawTextOnRectangle(renderer, temp, x, y, font, color);
             factPtr = factPtr->next;
             x+=100;
